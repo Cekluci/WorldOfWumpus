@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
-    private Scanner scanner;
+    private final Scanner scanner;
 
     public Menu() {
         this.scanner = new Scanner(System.in);
@@ -37,7 +37,6 @@ public class Menu {
 
     public String chooseFileFromDirectory(String directoryPath) {
         List<String> fileNames = FileUtils.listFilesInDirectory(directoryPath);
-        System.out.println(directoryPath);
 
         if (fileNames.isEmpty()) {
             System.out.println("Nincsenek betöltendő file-ok.");
@@ -58,6 +57,6 @@ public class Menu {
             choice = scanner.nextInt();
         } while (choice < 1 || choice > fileNames.size());
 
-        return directoryPath + "/" + fileNames.get(choice - 1);
+        return fileNames.get(choice - 1);
     }
 }

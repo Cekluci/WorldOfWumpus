@@ -6,8 +6,8 @@ public class Hero {
     private char direction;
     private int arrows;
 
-    public Hero(int column, int row, char direction, int arrows) {
-        this.column = column;
+    public Hero(char column, int row, char direction, int arrows) {
+        this.column = convertColumnToIndex(column);
         this.row = row - 1;
         this.direction = direction;
         this.arrows = arrows;
