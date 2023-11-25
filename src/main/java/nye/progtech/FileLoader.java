@@ -27,7 +27,7 @@ public class FileLoader {
                 board[i] = line.toCharArray();
             }
 
-            return new GameBoard(size, board, heroColumn, heroRow, heroDirection);
+            return new GameBoard(size, board, heroColumn, heroRow, heroDirection, fileName);
         }
     }
 }
