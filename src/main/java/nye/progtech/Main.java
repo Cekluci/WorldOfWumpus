@@ -1,42 +1,49 @@
 package nye.progtech;
 
-import nye.progtech.interfaces.DBRepositoryInterface;
+import nye.progtech.controller.ConsoleController;
+import nye.progtech.controller.Menu;
+import nye.progtech.db.DBInitializer;
+import nye.progtech.repository.DBRepositoryInterface;
+import nye.progtech.model.GameBoard;
+import nye.progtech.model.Hero;
+import nye.progtech.repository.DBRepositoryImpl;
 import nye.progtech.services.GameBoardService;
-import org.h2.jdbcx.JdbcDataSource;
 
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
-
-
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
 public class Main {
+
+    /**.
+     * Scanner objektum létrehozása
+     */
     private static Scanner scanner = new Scanner(System.in);
     private static Menu menu = new Menu();
     private static DBRepositoryInterface dbRepository;
-    private static GameBoardService gameBoardService;
-    private static GameBoard gameBoard;
+
+    private static Hero hero;
 
     public static void main(String[] args) throws SQLException {
-        //h2 adatbázis létrehozása
-        JdbcDataSource dataSource = new JdbcDataSource();
-        dataSource.setURL("jdbc:h2:mem:wumpusgame;DB_CLOSE_DELAY=-1");
-        dataSource.setUser("sa");
-        dataSource.setPassword("");
 
-        DBInitializer dbInitializer = new DBInitializer(dataSource);
-        dbInitializer.initializeDB();
+        Scanner scanner = new Scanner(System.in);
+        ConsoleController consoleController = new ConsoleController(scanner);
+        GameBoardService gameBoardService = new GameBoardService(dbRepository);
 
-        dbRepository = new DBRepositoryImpl(dataSource);
-        gameBoardService = new GameBoardService(dbRepository);
+        GameBoard gameBoard = null;
 
-        //H2 web portal engedélyezése
-        org.h2.tools.Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082").start();
+        //DB inicializálás és előzetes feltöltés
+        DBInitializer.initializeDB();
+        DBInitializer.uploadDBWorld();
 
-        String userName = promptForUserName();
+        DataSource dataSource = DBInitializer.createDataSource();
+        DBRepositoryInterface dbRepository = new DBRepositoryImpl(dataSource);
+
+
+        String userName = consoleController.promptForUserName();
+        consoleController.greetUser(userName);
+
         boolean isRunning = true;
 
         while (isRunning) {
@@ -48,16 +55,28 @@ public class Main {
                     System.out.println("Pályaszerkesztés lesz");
                     break;
                 case 2:
-                    gameBoard = performFileLoading();
+                    System.out.println("File beolvasás lesz");
+                    gameBoard = gameBoardService.performFileLoading("worlds", menu);
+                    hero = gameBoard.getHero();
+                    if (gameBoard != null) {
+                        gameBoard.displayBoard();
+                    } else {
+                        System.out.println("A file betöltése sikertelen.");
+                    }
+//                    System.out.println("HeroColumn: "+ hero.getColumn());
+//                    System.out.println("HeroRow: " + hero.getRow());
+//                    System.out.println("HeroDirection: " + hero.getDirection());
                     break;
                 case 3:
                     System.out.println("Adatbázisból betöltés lesz");
+                    chooseFileFromDB();
+                    break;
                 case 4:
                     System.out.println("Adatbázisba mentés lesz");
-                    System.out.println("A jelenlegi tábla:");
-                    gameBoard.displayBoard();
                     if (gameBoard != null) {
-                        saveCurrentGameBoard(gameBoard);
+                        dbRepository.saveGameBoardToDB(gameBoard);
+                        dbRepository.saveGameBoardDetailsToDB(gameBoard);
+                        System.out.println("A tábla sikeresen mentésre került az adatbázisba.");
                     } else {
                         System.out.println("Nem sikerült elmenteni a pályát.");
                     }
@@ -67,6 +86,7 @@ public class Main {
                     break;
                 case 6:
                     isRunning = false;
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Rossz választás, próbáld újra, kedves " + userName);
@@ -77,41 +97,28 @@ public class Main {
 
     }
 
-    private static String promptForUserName() {
-        System.out.println("Kérlek add meg a neved: ");
-        return scanner.nextLine();
-    }
+    private static String chooseFileFromDB() {
+        List<String> mapNames = dbRepository.getAllMapNames();
 
-    private static int getUserChoice() {
-        System.out.println("Kérlek válassz a menüből: ");
-        while (!scanner.hasNextInt()) {
-            System.out.println("Nem megfelelő választás. Kérlek próbáld újra.");
-            scanner.next();
+        if (mapNames.isEmpty()) {
+            System.out.println("Nincsenek betöltendő map-ok.");
+            return null;
         }
-        return scanner.nextInt();
-    }
 
-    private static GameBoard performFileLoading() {
-        try {
-            String choosenFile = menu.chooseFileFromDirectory("worlds");
-            if (choosenFile != null) {
-                GameBoard gameBoard = FileLoader.loadBoard(choosenFile);
-                gameBoard.displayBoard();
-                return gameBoard;
+        for (int i = 0; i < mapNames.size(); i++) {
+            System.out.println((i + 1) + ". " + mapNames.get(i));
+        }
+
+        int choice = -1;
+        do {
+            System.out.println("Válassz egy világot: ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Érvénytelen választás, próbáld újra!");
+                scanner.next();
             }
-        } catch (IOException e) {
-            System.err.println("Hiba történt a file beolvasása során: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return null;
-    }
+            choice = scanner.nextInt();
+        } while (choice < 1 || choice > mapNames.size());
 
-    private static void saveCurrentGameBoard(GameBoard gameBoard) {
-        if (gameBoard != null) {
-            gameBoardService.saveBoardToDB(gameBoard);
-            System.out.println("A játéktábla sikeresen mentve az adatbázisba.");
-        } else {
-            System.out.println("Nincs mentendő játéktábla, vagy a pálya azonosítója érvénytelen.");
-        }
+        return mapNames.get(choice - 1);
     }
 }

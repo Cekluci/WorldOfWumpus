@@ -1,4 +1,6 @@
-package nye.progtech;
+package nye.progtech.util;
+
+import nye.progtech.model.GameBoard;
 
 import java.io.*;
 
@@ -10,15 +12,14 @@ public class FileLoader {
         }
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String[] firstLine = reader.readLine().split(" ");
-            System.out.println("firstLine: " + firstLine);
             int size = Integer.parseInt(firstLine[0]);
-            System.out.println("size: " + size);
+//            System.out.println("size: " + size);
             char heroColumn = firstLine[1].charAt(0);
-            System.out.println("heroColumn: " + heroColumn);
+//            System.out.println("heroColumn: " + heroColumn);
             int heroRow = Integer.parseInt(firstLine[2]);
-            System.out.println("heroRow: " + heroRow);
+//            System.out.println("heroRow: " + heroRow);
             char heroDirection = firstLine[3].charAt(0);
-            System.out.println("heroDirection: " + heroDirection);
+//            System.out.println("heroDirection: " + heroDirection);
 
             char[][] board = new char[size][size];
 

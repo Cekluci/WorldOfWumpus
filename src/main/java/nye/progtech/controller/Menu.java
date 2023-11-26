@@ -1,13 +1,19 @@
-package nye.progtech;
+package nye.progtech.controller;
+
+import nye.progtech.repository.DBRepositoryImpl;
+import nye.progtech.util.FileUtils;
+import nye.progtech.repository.DBRepositoryInterface;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
     private final Scanner scanner;
+    private static DBRepositoryInterface dbRepository;
 
     public Menu() {
         this.scanner = new Scanner(System.in);
+        //this.dbRepository = new DBRepositoryImpl();
     }
 
     public void displayMainMenu() {
@@ -24,9 +30,9 @@ public class Menu {
         int choice = 0;
 
         do {
-            System.out.print("Kérlek válassz!");
+            System.out.print("Kérlek válassz: ");
             while (!scanner.hasNextInt()) {
-                System.out.println("Nem érvényes opció. Írj be egy számot.");
+                System.out.println("Nem érvényes opció. Válassz egy menüpontot.");
                 scanner.next();
             }
             choice = scanner.nextInt();
@@ -59,4 +65,5 @@ public class Menu {
 
         return fileNames.get(choice - 1);
     }
+
 }

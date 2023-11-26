@@ -1,4 +1,4 @@
-package nye.progtech;
+package nye.progtech.model;
 
 public class Hero {
     private int column;
@@ -11,6 +11,10 @@ public class Hero {
         this.row = row - 1;
         this.direction = direction;
         this.arrows = arrows;
+    }
+
+    public Hero() {
+
     }
 
     public int getColumn() {

@@ -1,6 +1,4 @@
-package nye.progtech;
-
-import nye.progtech.DAO.Tile;
+package nye.progtech.model;
 
 public class GameBoard {
     private int size;
@@ -14,6 +12,10 @@ public class GameBoard {
         this.hero = new Hero(heroColumn, heroRow, heroDirection, calculateArrows());
         this.mapName = mapName;
         placeHero();
+    }
+
+    public GameBoard() {
+
     }
 
     public int getSize() {
