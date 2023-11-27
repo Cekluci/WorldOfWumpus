@@ -1,7 +1,10 @@
 package nye.progtech;
 
+import nye.progtech.DAO.BoardDetails;
+import nye.progtech.DAO.Tile;
 import nye.progtech.controller.ConsoleController;
 import nye.progtech.controller.Menu;
+import nye.progtech.controller.MenuOption;
 import nye.progtech.db.DBInitializer;
 import nye.progtech.repository.DBRepositoryInterface;
 import nye.progtech.model.GameBoard;
@@ -48,53 +51,59 @@ public class Main {
 
         while (isRunning) {
             menu.displayMainMenu();
-            int choice = menu.getUserChoice();
+            MenuOption selectedOption = menu.getSelectedOption();
 
-            switch (choice) {
-                case 1:
-                    System.out.println("Pályaszerkesztés lesz");
-                    break;
-                case 2:
-                    System.out.println("File beolvasás lesz");
-                    gameBoard = gameBoardService.performFileLoading("worlds", menu);
-                    hero = gameBoard.getHero();
-                    if (gameBoard != null) {
-                        gameBoard.displayBoard();
-                    } else {
-                        System.out.println("A file betöltése sikertelen.");
-                    }
-//                    System.out.println("HeroColumn: "+ hero.getColumn());
-//                    System.out.println("HeroRow: " + hero.getRow());
-//                    System.out.println("HeroDirection: " + hero.getDirection());
-                    break;
-                case 3:
-                    System.out.println("Adatbázisból betöltés lesz");
-                    chooseFileFromDB();
-                    break;
-                case 4:
-                    System.out.println("Adatbázisba mentés lesz");
-                    if (gameBoard != null) {
-                        dbRepository.saveGameBoardToDB(gameBoard);
-                        dbRepository.saveGameBoardDetailsToDB(gameBoard);
-                        System.out.println("A tábla sikeresen mentésre került az adatbázisba.");
-                    } else {
-                        System.out.println("Nem sikerült elmenteni a pályát.");
-                    }
-                    break;
-                case 5:
-                    System.out.println("Játszás lesz");
-                    break;
-                case 6:
-                    isRunning = false;
-                    System.exit(0);
-                    break;
-                default:
-                    System.out.println("Rossz választás, próbáld újra, kedves " + userName);
+            if (selectedOption != null) {
+                switch (selectedOption) {
+                    case PALYASZERKESZTO:
+                        System.out.println("Pályaszerkesztés lesz");
+                        break;
+                    case FILEBEOLVASAS: //KÉSZ
+                        System.out.println("File beolvasás lesz");
+                        gameBoard = gameBoardService.performFileLoading("worlds", menu);
+                        hero = gameBoard.getHero();
+                        if (gameBoard != null) {
+                            gameBoard.displayBoard();
+                        } else {
+                            System.out.println("A file betöltése sikertelen.");
+                        }
+                        break;
+                    case BETOLTESADATBAZISBOL:
+                        System.out.println("Adatbázisból betöltés lesz");
+                        //chooseFileFromDB();
+                        System.out.println(dbRepository.getAllMapNames()); //OKÉS
+                        BoardDetails bd = (BoardDetails) dbRepository.selectBoardDetailsByMapName("dbWorldTest");
+                        System.out.println("Board size: " + bd.getBoardSize());
+                        System.out.println("Hero row index: " + bd.getHeroRowIndex());
+                        System.out.println("Hero col index: " + bd.getHeroColIndex());
+                        System.out.println("Hero direction: " + bd.getHeroDirection());
+                        List<Tile> tiles = dbRepository.selectTilesByMapName("dbWorldTest");
+                        System.out.println("----------betöltött map-----------");
+                        gameBoardService.loadBoard(tiles);
+                        break;
+                    case METESADATBAZISBA: //KÉSZ
+                        System.out.println("Adatbázisba mentés lesz");
+                        if (gameBoard != null) {
+                            dbRepository.saveGameBoardToDB(gameBoard);
+                            dbRepository.saveGameBoardDetailsToDB(gameBoard);
+                            System.out.println("A tábla sikeresen mentésre került az adatbázisba.");
+                        } else {
+                            System.out.println("Nem sikerült elmenteni a pályát.");
+                        }
+                        break;
+                    case JATEK:
+                        System.out.println("Játszás lesz");
+                        break;
+                    case KILEPES: //KÉSZ
+                        isRunning = false;
+                        System.exit(0);
+                        break;
+                    default:
+                        System.out.println("Rossz választás, próbáld újra, kedves " + userName);
+                }
+                System.out.println("Köszi, hogy játszottál, " + userName + "!");
             }
         }
-
-        System.out.println("Köszi, hogy játszottál, " + userName + "!");
-
     }
 
     private static String chooseFileFromDB() {

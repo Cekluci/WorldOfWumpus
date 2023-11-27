@@ -9,7 +9,7 @@ import java.util.List;
 public interface DBRepositoryInterface {
     List<Tile> selectTilesByMapName(String mapName);
 
-    List<BoardDetails> selectBoardDetailsByMapName(String mapName);
+    BoardDetails selectBoardDetailsByMapName(String mapName);
 
     List<String> getAllMapNames();
 

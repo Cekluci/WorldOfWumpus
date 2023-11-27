@@ -20,6 +20,7 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
         this.dataSource = dataSource;
     }
 
+    //olvassuk ki a map-ot az adatbázisból
     @Override
     public List<Tile> selectTilesByMapName(String mapName) {
         List<Tile> tiles = new ArrayList<>();
@@ -43,6 +44,7 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
         return tiles;
     }
 
+    //Mentsük el a map-ot az adatbázisba
     private void insertTile(Tile tile) {
         String sql = "INSERT INTO tiles (rowindex, columnindex, content, mapname) VALUES (?, ?, ?, ?)";
         try (
@@ -59,6 +61,7 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
         }
     }
 
+    //Mentsük el a boarddetails-t az adatbázisba
     private void insertBoardDetails(BoardDetails boardDetails) {
         String sql = "INSERT INTO boarddetails (boardsize, herorowindex, herocolindex,herodirection, mapname)" +
                         "VALUES (?, ?, ?, ?, ?)";
@@ -77,28 +80,27 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
         }
     }
 
+    //Olvassuk be a boarddetails-t az adatbázisból
     @Override
-    public List<BoardDetails> selectBoardDetailsByMapName(String mapName) {
-        List<BoardDetails> boardDetail = new ArrayList<>();
+    public BoardDetails selectBoardDetailsByMapName(String mapName) {
+        BoardDetails bd = new BoardDetails();
         String sql = "SELECT * FROM boarddetails WHERE mapname = ?";
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, mapName);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    BoardDetails boardDetails = new BoardDetails();
-                    boardDetails.setBoardSize(rs.getInt("boardsize"));
-                    boardDetails.setHeroRowIndex(rs.getInt("herorowindex"));
-                    boardDetails.setHeroColIndex(rs.getInt("herocolindex"));
-                    boardDetails.setHeroDirection(rs.getString("herodirection").charAt(0));
-                    boardDetails.setMapName(rs.getString("mapname"));
-                    boardDetail.add(boardDetails);
+                    bd.setBoardSize(rs.getInt("boardsize"));
+                    bd.setHeroRowIndex(rs.getInt("herorowindex"));
+                    bd.setHeroColIndex(rs.getInt("herocolindex"));
+                    bd.setHeroDirection(rs.getString("herodirection").charAt(0));
+                    bd.setMapName(rs.getString("mapname"));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return boardDetail;
+        return bd;
     }
 
     @Override

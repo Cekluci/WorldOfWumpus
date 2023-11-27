@@ -36,13 +36,33 @@ public class GameBoardService {
         return null;
     }
 
-    public GameBoard loadBoardFromDB(String mapName) {
-        List<Tile> tiles = dbRepository.selectTilesByMapName(mapName);
-        List<BoardDetails> boardDetails = null;
-        GameBoard gameBoard = new GameBoard();
-        //int size = calculateBoardSize(tiles);
-        return null;
+    public void loadBoard(List<Tile> tiles) {
+
+        char[][] board = new char[6][6];
+        for (Tile tile : tiles) {
+            board[tile.getRow()][tile.getColumn()] = tile.getContent();
+        }
+
+        System.out.print("   "); // Három szóköz a sorszámozás előtt
+        for (int i = 0; i < 6; i++) {
+            System.out.print((char)('A' + i) + " ");
+        }
+        System.out.println(); // Új sor a tábla tetején
+
+        for (int i = 0; i < 6; i++) {
+            // Sorok számának kiírása
+            System.out.print((i + 1) + " ");
+            if (i < 9) {
+                System.out.print(" ");
+            }
+
+            for (int j = 0; j < 6; j++) {
+                System.out.print(board[i][j] + " "); // Tábla aktuális mezőjének kiírása
+            }
+            System.out.println(); // Új sor minden sor után
+        }
     }
+        //return null;
 
 
 }
