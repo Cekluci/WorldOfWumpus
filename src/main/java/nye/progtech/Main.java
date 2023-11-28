@@ -72,12 +72,13 @@ public class Main {
                         System.out.println("Adatbázisból betöltés lesz");
                         //chooseFileFromDB();
                         System.out.println(dbRepository.getAllMapNames()); //OKÉS
-                        BoardDetails bd = (BoardDetails) dbRepository.selectBoardDetailsByMapName("dbWorldTest");
+                        String choosenMap = menu.chooseFileFromDB();
+                        BoardDetails bd = (BoardDetails) dbRepository.selectBoardDetailsByMapName(choosenMap);
                         System.out.println("Board size: " + bd.getBoardSize());
                         System.out.println("Hero row index: " + bd.getHeroRowIndex());
                         System.out.println("Hero col index: " + bd.getHeroColIndex());
                         System.out.println("Hero direction: " + bd.getHeroDirection());
-                        List<Tile> tiles = dbRepository.selectTilesByMapName("dbWorldTest");
+                        List<Tile> tiles = dbRepository.selectTilesByMapName(choosenMap);
                         System.out.println("----------betöltött map-----------");
                         gameBoardService.loadBoard(tiles);
                         break;

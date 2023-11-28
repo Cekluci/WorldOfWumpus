@@ -17,6 +17,7 @@ public class GameBoardService {
 //    private GameBoard board;
 
     private Hero hero;
+    private GameBoard gameBoard;
 
     public GameBoardService(DBRepositoryInterface dbRepository) {
         this.dbRepository = dbRepository;
@@ -43,6 +44,8 @@ public class GameBoardService {
             board[tile.getRow()][tile.getColumn()] = tile.getContent();
         }
 
+
+        //display-ből kimásolva egyelőre
         System.out.print("   "); // Három szóköz a sorszámozás előtt
         for (int i = 0; i < 6; i++) {
             System.out.print((char)('A' + i) + " ");
