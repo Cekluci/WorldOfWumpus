@@ -19,7 +19,8 @@ import java.util.Scanner;
 
 public class Main {
 
-    /**.
+    /**
+     * .
      * Scanner objektum létrehozása
      */
     private static Scanner scanner = new Scanner(System.in);
@@ -68,19 +69,19 @@ public class Main {
                             System.out.println("A file betöltése sikertelen.");
                         }
                         break;
-                    case BETOLTESADATBAZISBOL:
+                    case BETOLTESADATBAZISBOL: //KÉSZ
                         System.out.println("Adatbázisból betöltés lesz");
-                        //chooseFileFromDB();
-                        System.out.println(dbRepository.getAllMapNames()); //OKÉS
                         String choosenMap = menu.chooseFileFromDB();
                         BoardDetails bd = (BoardDetails) dbRepository.selectBoardDetailsByMapName(choosenMap);
-                        System.out.println("Board size: " + bd.getBoardSize());
-                        System.out.println("Hero row index: " + bd.getHeroRowIndex());
-                        System.out.println("Hero col index: " + bd.getHeroColIndex());
-                        System.out.println("Hero direction: " + bd.getHeroDirection());
                         List<Tile> tiles = dbRepository.selectTilesByMapName(choosenMap);
                         System.out.println("----------betöltött map-----------");
-                        gameBoardService.loadBoard(tiles);
+                        gameBoard = gameBoardService.loadBoardFromDB(tiles, bd);
+                        hero = gameBoard.getHero();
+                        if (gameBoard != null) {
+                            gameBoard.displayBoard();
+                        } else {
+                            System.out.println("A tábla betöltése sikertelen.");
+                        }
                         break;
                     case METESADATBAZISBA: //KÉSZ
                         System.out.println("Adatbázisba mentés lesz");
@@ -105,30 +106,5 @@ public class Main {
                 System.out.println("Köszi, hogy játszottál, " + userName + "!");
             }
         }
-    }
-
-    private static String chooseFileFromDB() {
-        List<String> mapNames = dbRepository.getAllMapNames();
-
-        if (mapNames.isEmpty()) {
-            System.out.println("Nincsenek betöltendő map-ok.");
-            return null;
-        }
-
-        for (int i = 0; i < mapNames.size(); i++) {
-            System.out.println((i + 1) + ". " + mapNames.get(i));
-        }
-
-        int choice = -1;
-        do {
-            System.out.println("Válassz egy világot: ");
-            while (!scanner.hasNextInt()) {
-                System.out.println("Érvénytelen választás, próbáld újra!");
-                scanner.next();
-            }
-            choice = scanner.nextInt();
-        } while (choice < 1 || choice > mapNames.size());
-
-        return mapNames.get(choice - 1);
     }
 }
