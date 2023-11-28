@@ -3,12 +3,14 @@ package nye.progtech.model;
 public class GameBoard {
     private int size;
     private char[][] board;
+    private char[][] originalBoard;
     private Hero hero;
     private String mapName;
 
-    public GameBoard(int size, char[][] board, char heroColumn, int heroRow, char heroDirection, String mapName) {
+    public GameBoard(int size, char[][] board, char[][] originalBoard, char heroColumn, int heroRow, char heroDirection, String mapName) {
         this.size = size;
         this.board = board;
+        this.originalBoard = originalBoard;
         this.hero = new Hero(heroColumn, heroRow, heroDirection, calculateArrows());
         this.mapName = mapName;
         placeHero();
@@ -32,6 +34,14 @@ public class GameBoard {
 
     public void setBoard(char[][] board) {
         this.board = board;
+    }
+
+    public char[][] getOriginalBoard() {
+        return originalBoard;
+    }
+
+    public void setOriginalBoard(char[][] board) {
+        this.originalBoard = board;
     }
 
     public Hero getHero() {
@@ -69,6 +79,22 @@ public class GameBoard {
     public char getCell(int row, int col) {
         if (row >= 0 && row < board.length && col >= 0 && col < board.length) {
             return board[row][col];
+        } else {
+            throw new IllegalArgumentException("Érvénytelen cella index: (" + row + ", " + col + ".");
+        }
+    }
+
+    public char getCellFromOriginalBoard(int row, int col) {
+        if (row >= 0 && row < originalBoard.length && col >= 0 && col < originalBoard.length) {
+            return originalBoard[row][col];
+        } else {
+            throw new IllegalArgumentException("Érvénytelen cella index: (" + row + ", " + col + ".");
+        }
+    }
+
+    public void setCell(int row, int col, char cellItem) {
+        if (row >=0 && row < board.length && col >= 0 && col < board.length) {
+            board[row][col] = cellItem;
         } else {
             throw new IllegalArgumentException("Érvénytelen cella index: (" + row + ", " + col + ".");
         }

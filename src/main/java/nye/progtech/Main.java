@@ -2,6 +2,7 @@ package nye.progtech;
 
 import nye.progtech.DAO.BoardDetails;
 import nye.progtech.DAO.Tile;
+import nye.progtech.Game.Game;
 import nye.progtech.controller.ConsoleController;
 import nye.progtech.controller.Menu;
 import nye.progtech.controller.MenuOption;
@@ -28,6 +29,7 @@ public class Main {
     private static DBRepositoryInterface dbRepository;
 
     private static Hero hero;
+    private static GameBoard gameBoard;
 
     public static void main(String[] args) throws SQLException {
 
@@ -35,7 +37,7 @@ public class Main {
         ConsoleController consoleController = new ConsoleController(scanner);
         GameBoardService gameBoardService = new GameBoardService(dbRepository);
 
-        GameBoard gameBoard = null;
+        //GameBoard gameBoard = null;
 
         //DB inicializálás és előzetes feltöltés
         DBInitializer.initializeDB();
@@ -95,6 +97,8 @@ public class Main {
                         break;
                     case JATEK:
                         System.out.println("Játszás lesz");
+                        Game game = new Game(hero, gameBoard);
+                        game.start();
                         break;
                     case KILEPES: //KÉSZ
                         isRunning = false;

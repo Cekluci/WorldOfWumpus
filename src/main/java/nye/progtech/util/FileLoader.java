@@ -22,13 +22,18 @@ public class FileLoader {
 //            System.out.println("heroDirection: " + heroDirection);
 
             char[][] board = new char[size][size];
+            char[][] originalBoard = new char[size][size];
 
             for (int i = 0; i < size;i++) {
                 String line = reader.readLine();
                 board[i] = line.toCharArray();
+                originalBoard[i] = line.toCharArray();
             }
 
-            return new GameBoard(size, board, heroColumn, heroRow, heroDirection, fileName);
+            //Állítsuk át a Hős pozícióját alaphelyzetbe az originalBoardon
+            originalBoard[4][1] = '_';
+
+            return new GameBoard(size, board, originalBoard, heroColumn, heroRow, heroDirection, fileName);
         }
     }
 }

@@ -50,6 +50,31 @@ public class Hero {
     }
 
     private int convertColumnToIndex(char columnLabel) {
+
         return Character.toUpperCase(columnLabel) - 'A';
+    }
+
+    //Előre
+    public void moveForward() {
+        int currentRow = this.getRow();
+        int currentColumn = this.getColumn();
+        int futureColumn;
+        int futureRow;
+        char currentDirection = this.getDirection();
+
+        switch (currentDirection) {
+            case 'E':
+                this.setColumn(this.getColumn() + 1);
+                break;
+            case 'S':
+                this.setRow(this.getRow() + 1);
+                break;
+            case 'W':
+                this.setColumn(this.getColumn() - 1);
+                break;
+            case 'N':
+                this.setRow(this.getRow() - 1);
+        }
+
     }
 }

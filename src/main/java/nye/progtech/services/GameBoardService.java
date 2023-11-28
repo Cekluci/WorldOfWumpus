@@ -41,9 +41,11 @@ public class GameBoardService {
 
         int boardSize = bd.getBoardSize();
         char[][] board = new char[boardSize][boardSize];
+        char[][] originalBoard = new char[boardSize][boardSize];
 
         for (Tile tile : tiles) {
             board[tile.getRow()][tile.getColumn()] = tile.getContent();
+            originalBoard[tile.getRow()][tile.getColumn()] = tile.getContent();
         }
 
         //heroRow
@@ -55,28 +57,10 @@ public class GameBoardService {
         //fileName
         String fileName = bd.getMapName();
 
-        return new GameBoard(boardSize, board, heroColumn, heroRow, heroDirection, fileName);
-        //display-ből kimásolva egyelőre
-//        System.out.print("   "); // Három szóköz a sorszámozás előtt
-//        for (int i = 0; i < 6; i++) {
-//            System.out.print((char)('A' + i) + " ");
-//        }
-//        System.out.println(); // Új sor a tábla tetején
-//
-//        for (int i = 0; i < 6; i++) {
-//            // Sorok számának kiírása
-//            System.out.print((i + 1) + " ");
-//            if (i < 9) {
-//                System.out.print(" ");
-//            }
-//
-//            for (int j = 0; j < 6; j++) {
-//                System.out.print(board[i][j] + " "); // Tábla aktuális mezőjének kiírása
-//            }
-//            System.out.println(); // Új sor minden sor után
-//        }
-//    }
-//        //return null;
+        //Állítsuk át a Hős pozícióját alaphelyzetbe az originalBoardon
+        originalBoard[4][1] = '_';
+
+        return new GameBoard(boardSize, board, originalBoard, heroColumn, heroRow, heroDirection, fileName);
 
     }
 }
