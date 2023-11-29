@@ -3,6 +3,7 @@ package nye.progtech;
 import nye.progtech.DAO.BoardDetails;
 import nye.progtech.DAO.Tile;
 import nye.progtech.Game.Game;
+import nye.progtech.Game.MapEditor;
 import nye.progtech.controller.ConsoleController;
 import nye.progtech.controller.Menu;
 import nye.progtech.controller.MenuOption;
@@ -60,6 +61,8 @@ public class Main {
                 switch (selectedOption) {
                     case PALYASZERKESZTO:
                         System.out.println("Pályaszerkesztés lesz");
+                        MapEditor mapEditor = new MapEditor();
+                        mapEditor.startEditor();
                         break;
                     case FILEBEOLVASAS: //KÉSZ
                         System.out.println("File beolvasás lesz");

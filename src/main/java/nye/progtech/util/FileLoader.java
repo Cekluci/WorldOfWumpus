@@ -30,8 +30,13 @@ public class FileLoader {
                 originalBoard[i] = line.toCharArray();
             }
 
-            //Állítsuk át a Hős pozícióját alaphelyzetbe az originalBoardon
-            originalBoard[4][1] = '_';
+            for (int i = 0; i < size; i++){
+                for (int j = 0; j < size; j++) {
+                    if (originalBoard[i][j] == 'G' || originalBoard[i][j] == 'H') {
+                        originalBoard[i][j] = '_';
+                    }
+                }
+            }
 
             return new GameBoard(size, board, originalBoard, heroColumn, heroRow, heroDirection, fileName);
         }

@@ -45,7 +45,11 @@ public class GameBoardService {
 
         for (Tile tile : tiles) {
             board[tile.getRow()][tile.getColumn()] = tile.getContent();
-            originalBoard[tile.getRow()][tile.getColumn()] = tile.getContent();
+            if (originalBoard[tile.getRow()][tile.getColumn()] == 'G' || originalBoard[tile.getRow()][tile.getColumn()] == 'H') {
+                originalBoard[tile.getRow()][tile.getColumn()] = '_';
+            } else {
+                originalBoard[tile.getRow()][tile.getColumn()] = tile.getContent();
+            }
         }
 
         //heroRow
@@ -56,9 +60,6 @@ public class GameBoardService {
         char heroDirection = bd.getHeroDirection();
         //fileName
         String fileName = bd.getMapName();
-
-        //Állítsuk át a Hős pozícióját alaphelyzetbe az originalBoardon
-        originalBoard[4][1] = '_';
 
         return new GameBoard(boardSize, board, originalBoard, heroColumn, heroRow, heroDirection, fileName);
 

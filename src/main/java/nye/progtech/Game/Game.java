@@ -18,12 +18,14 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
         while (running) {
+            iranymutatas(hero.getDirection());
             System.out.println("Az alábbi parancsok közül választhatsz, mindig vedd figyelembe, ");
             System.out.println("hogy az irányok az éppen aktuális irány alapján kerülnek végrehajtásra!");
-            System.out.println("forward: Előre lépés.");
-            System.out.println("backward: Hátra lépés.");
-            System.out.println("left: Balra lépés.");
-            System.out.println("right: Jobbra lépés");
+            System.out.println("forward: Lépés előre.");
+            System.out.println("backward: Lépés hátra.");
+            System.out.println("left: Lépés balra.");
+            System.out.println("right: Lépés jobbra.");
+            System.out.println("direction east|west|north|south: Hős irányának beállítása.");
             System.out.println("Adj meg egy parancsot: ");
             String command = scanner.nextLine();
 
@@ -31,8 +33,6 @@ public class Game {
 
             switch (command) {
                 case "forward":
-//                    System.out.println("Hero Direction: " + hero.getDirection());
-//                    System.out.println("Hero rowIndex: " + hero.getRow() + ", colIndex: " + hero.getColumn());
                     HeroTakeStepForward(hero.getDirection());
                     break;
                 case "backward":
@@ -44,10 +44,31 @@ public class Game {
                 case "right":
                     HeroTakeStepRight(hero.getDirection());
                     break;
+                case "direction east":
+                    HeroChangeDirection('E');
+                    break;
+                case "direction west":
+                    HeroChangeDirection('W');
+                    break;
+                case "direction north":
+                    HeroChangeDirection('N');
+                    break;
+                case "direction south":
+                    HeroChangeDirection('S');
+                    break;
             }
             gameBoard.displayBoard();
         }
         scanner.close();
+    }
+
+    public void HeroChangeDirection(char newDir) {
+        char currentDirection = hero.getDirection();
+        if (currentDirection == newDir) {
+            System.out.println("Már ebben az irányban állsz.");
+        } else {
+            hero.setDirection(newDir);
+        }
     }
 
     public void HeroTakeStepForward(char direction) {
@@ -85,7 +106,7 @@ public class Game {
                 hero.setRow(nextStepRow);
                 hero.setColumn(nextStepCol);
                 gameBoard.setCell(nextStepRow, nextStepCol, 'H');
-                //Arany felvétele metódus
+                System.out.println(hero.getGold());
                 break;
             case 'U':
                 System.out.println("A Wumpus megtalált, így sajnos meghaltál.");
@@ -279,5 +300,46 @@ public class Game {
                 break;
         }
 
+    }
+
+    public void iranymutatas (char direction) {
+        String defaultColor = "\u001B[0m";
+        String north = "";
+        String east = "";
+        String west = "";
+        String south = "";
+
+        switch (direction) {
+            case 'N':
+                north = "\u001B[32m";
+                east = "\u001B[0m";
+                west = "\u001B[0m";
+                south = "\u001B[0m";
+                break;
+            case 'E':
+                north = "\u001B[0m";
+                east = "\u001B[32m";
+                west = "\u001B[0m";
+                south = "\u001B[0m";
+                break;
+            case 'W':
+                north = "\u001B[0m";
+                east = "\u001B[0m";
+                west = "\u001B[32m";
+                south = "\u001B[0m";
+                break;
+            case 'S':
+                north = "\u001B[0m";
+                east = "\u001B[0m";
+                west = "\u001B[0m";
+                south = "\u001B[32m";
+                break;
+        }
+
+        System.out.println("    " + north + "N    ");
+        System.out.println("    " + north + "↑    ");
+        System.out.println(west + "W ← " + defaultColor + "+" + east + " → E");
+        System.out.println("    " + south + "↓    ");
+        System.out.println("    " + south + "S    " + defaultColor);
     }
 }
