@@ -64,9 +64,16 @@ public class Main {
                         } else {
                             System.out.println("A file betöltése sikertelen.");
                         }
+
                         JSONHandler jsonHandler = new JSONHandler();
                         jsonHandler.saveToJSON(gameBoard, "teszt");
                         jsonHandler.saveToXML(gameBoard, "teszt");
+
+                        GameBoard newGameBoard = jsonHandler.loadGameBoardFromJson("Json/teszt.json");
+                        if (newGameBoard != null) {
+                            System.out.println("------------------json-ból---------");
+                            newGameBoard.displayBoard();
+                        }
                         break;
                     case BETOLTESADATBAZISBOL: //KÉSZ
                         System.out.println("Adatbázisból betöltés lesz");

@@ -3,14 +3,15 @@ package nye.progtech.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class GameBoard {
-    @JsonIgnore
-    private transient int size;
-    @JsonIgnore
-    private transient char[][] board;
-    @JsonIgnore
-    private transient char[][] originalBoard;
+    private int size;
+
+    private char[][] board;
+
+    private char[][] originalBoard;
     private Hero hero;
     private String mapName;
+    private String[] jsonBoard;
+    private String[] jsonOriginalBoard;
 
     public GameBoard(int size, char[][] board, char[][] originalBoard, char heroColumn, int heroRow, char heroDirection, String mapName) {
         this.size = size;
@@ -140,4 +141,6 @@ public class GameBoard {
         }
         return emptyBoard;
     }
+
+
 }

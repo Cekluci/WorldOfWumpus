@@ -1,1 +1,26 @@
-<GameBoard><hero><column>1</column><row>4</row><direction>E</direction><arrows>1</arrows></hero><mapName>testWorld.txt</mapName></GameBoard>
+<GameBoard>
+    <size>6</size>
+    <board>
+        <board>WWWWWW</board>
+        <board>W___PW</board>
+        <board>WUGP_W</board>
+        <board>W____W</board>
+        <board>WH_P_W</board>
+        <board>WWWWWW</board>
+    </board>
+    <originalBoard>
+        <originalBoard>WWWWWW</originalBoard>
+        <originalBoard>W___PW</originalBoard>
+        <originalBoard>WU_P_W</originalBoard>
+        <originalBoard>W____W</originalBoard>
+        <originalBoard>W__P_W</originalBoard>
+        <originalBoard>WWWWWW</originalBoard>
+    </originalBoard>
+    <hero>
+        <column>1</column>
+        <row>4</row>
+        <direction>E</direction>
+        <arrows>1</arrows>
+    </hero>
+    <mapName>testWorld.txt</mapName>
+</GameBoard>
