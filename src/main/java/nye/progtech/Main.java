@@ -8,6 +8,7 @@ import nye.progtech.controller.ConsoleController;
 import nye.progtech.controller.Menu;
 import nye.progtech.controller.MenuOption;
 import nye.progtech.db.DBInitializer;
+import nye.progtech.fileUtils.JSONHandler;
 import nye.progtech.repository.DBRepositoryInterface;
 import nye.progtech.model.GameBoard;
 import nye.progtech.model.Hero;
@@ -25,8 +26,6 @@ public class Main {
      * .
      * Scanner objektum létrehozása
      */
-    private static Scanner scanner = new Scanner(System.in);
-    private static Menu menu = new Menu();
     private static DBRepositoryInterface dbRepository;
 
     private static Hero hero;
@@ -34,8 +33,8 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
 
-        Scanner scanner = new Scanner(System.in);
-        ConsoleController consoleController = new ConsoleController(scanner);
+        //Scanner scanner = new Scanner(System.in);
+        ConsoleController consoleController = new ConsoleController();
         GameBoardService gameBoardService = new GameBoardService(dbRepository);
 
         //GameBoard gameBoard = null;
@@ -54,8 +53,8 @@ public class Main {
         boolean isRunning = true;
 
         while (isRunning) {
-            menu.displayMainMenu();
-            MenuOption selectedOption = menu.getSelectedOption();
+            consoleController.displayMainMenu();
+            MenuOption selectedOption = consoleController.getSelectedOption();
 
             if (selectedOption != null) {
                 switch (selectedOption) {
@@ -66,17 +65,20 @@ public class Main {
                         break;
                     case FILEBEOLVASAS: //KÉSZ
                         System.out.println("File beolvasás lesz");
-                        gameBoard = gameBoardService.performFileLoading("worlds", menu);
+                        gameBoard = gameBoardService.performFileLoading("worlds");
                         hero = gameBoard.getHero();
                         if (gameBoard != null) {
                             gameBoard.displayBoard();
                         } else {
                             System.out.println("A file betöltése sikertelen.");
                         }
+                        JSONHandler jsonHandler = new JSONHandler();
+                        jsonHandler.saveToJSON(gameBoard, "teszt");
+                        jsonHandler.saveToXML(gameBoard, "teszt");
                         break;
                     case BETOLTESADATBAZISBOL: //KÉSZ
                         System.out.println("Adatbázisból betöltés lesz");
-                        String choosenMap = menu.chooseFileFromDB();
+                        String choosenMap = consoleController.chooseFileFromDB();
                         BoardDetails bd = (BoardDetails) dbRepository.selectBoardDetailsByMapName(choosenMap);
                         List<Tile> tiles = dbRepository.selectTilesByMapName(choosenMap);
                         System.out.println("----------betöltött map-----------");

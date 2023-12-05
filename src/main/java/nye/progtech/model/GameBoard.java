@@ -1,9 +1,14 @@
 package nye.progtech.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class GameBoard {
-    private int size;
-    private char[][] board;
-    private char[][] originalBoard;
+    @JsonIgnore
+    private transient int size;
+    @JsonIgnore
+    private transient char[][] board;
+    @JsonIgnore
+    private transient char[][] originalBoard;
     private Hero hero;
     private String mapName;
 

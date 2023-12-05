@@ -1,5 +1,6 @@
 package nye.progtech.Game;
 
+import nye.progtech.controller.ConsoleController;
 import nye.progtech.model.GameBoard;
 import nye.progtech.model.Hero;
 
@@ -9,10 +10,13 @@ public class MapEditor {
 
     private Hero hero;
     private GameBoard gameBoard;
+    private Scanner scanner = new Scanner(System.in);
+    private ConsoleController consoleController = new ConsoleController();
 
     public MapEditor(Hero hero, GameBoard gameBoard) {
         this.hero = hero;
         this.gameBoard = gameBoard;
+
     }
 
     public MapEditor() {
@@ -39,21 +43,13 @@ public class MapEditor {
         boolean running = true;
 
         System.out.println("Üdvözöllek a pályaszerkesztőben!");
-        //GameBoard newGameBoard = new GameBoard();
 
         //while (running) {
-            System.out.println("Tábla mérete: ");
-            int size = scanner.nextInt();
-            System.out.println("Hős sora: ");
-            int heroRow = scanner.nextInt();
-            System.out.println("Hős oszlopa: ");
-            int heroCol = scanner.nextInt();
-            char heroColC = (char) (heroCol + 64);
-            System.out.println("Hős iránya (N/E/W/S): ");
-            char heroDir = scanner.next().charAt(0);
-            scanner.nextLine();
-            System.out.println("Pálya neve: ");
-            String mapName = scanner.nextLine();
+            int size = consoleController.askForBoardSize();
+            int heroRow = consoleController.askForHeroRow();
+            char heroColC = consoleController.askForHeroColumn();
+            char heroDir = consoleController.askForHeroDirection();
+            String mapName = consoleController.askForMapName();
 
             char[][] newBoard = createEmptyBoard(size);
 
@@ -67,41 +63,62 @@ public class MapEditor {
     }
 
     public void editGameBoard(GameBoard gameBoard) {
-        Scanner scanner = new Scanner(System.in);
+        int wumpusCount = 0;
+        int goldCount = 0;
+        while (true) {
+            String input = consoleController.askForEditorInput();
 
-        System.out.println("Add meg a pályaelemet a következő formátumban: [add|delete], sorszám, oszlopszám, pályaelem");
-        System.out.println("Pályaelem lehet a következő: U - Wumpus, P - Verem, G - Arany");
-
-        String input = scanner.nextLine();
-
-        String[] parts = input.split(",");
-        String command = parts[0].trim();
-        int row = Integer.parseInt(parts[1].trim());
-        int col = Integer.parseInt(parts[2].trim());
-        char content = parts[3].trim().charAt(0);
-
-        switch (command) {
-            case "add":
-                if (row - 1 == 0 || col - 1 == 0) {
-                    System.out.println("Nem rakhatsz ide semmit, ez itt fal.");
-                } else if (gameBoard.getCell(row - 1, col - 1) != '_') {
-                    System.out.println("Ez a mező már foglalt!");
-                } else {
-                    gameBoard.setCell(row - 1,col - 1, content);
-                }
+            if ("kilép".equalsIgnoreCase(input)) {
+                System.out.println("Kilépés a szerkesztőből.");
                 break;
-            case "delete":
-                if (row - 1 == 0 || col - 1 == 0) {
-                    System.out.println("Nem törölhetsz falat!");
-                } else if (gameBoard.getCell(row - 1, col - 1) == '_') {
-                    System.out.println("Ez a mező már üres!");
-                } else if (gameBoard.getCell(row - 1, col - 1) == 'H') {
-                    System.out.println("A Hőst nem törölheted a pályáról!");
-                } else {
-                    gameBoard.setCell(row - 1,col - 1, '_');
-                }
+            }
+
+            String[] parts = input.split(",");
+            String command = parts[0].trim();
+            int row = Integer.parseInt(parts[1].trim());
+            char col = parts[2].trim().charAt(0);
+            int colInt = Character.toUpperCase(col) - 64;
+            char content = parts[3].trim().charAt(0);
+
+            if (content == 'G') {
+                goldCount++;
+            } else if (content == 'U') {
+                wumpusCount++;
+            }
+
+            switch (command) {
+                case "add":
+                    if (row - 1 == 0 || colInt - 1 == 0) {
+                        System.out.println("Nem rakhatsz ide semmit, ez itt fal.");
+                    } else if (row - 1 > gameBoard.getSize() || colInt - 1 > gameBoard.getSize()) {
+                        System.out.println("A pálya határain kívül vagy.");
+                    } else if (gameBoard.getCell(row - 1, colInt - 1) != '_') {
+                        System.out.println("Ez a mező már foglalt!");
+                    } else {
+                        if (wumpusCount > 1 ){
+                            System.out.println("Nem lehet 1-nél több Wumpus a pályán!");
+                        } else if (goldCount > 1) {
+                            System.out.println("Nem lehet 1-nél több aranya a pályán!");
+                        } else {
+                            gameBoard.setCell(row - 1, colInt - 1, content);
+                        }
+                    }
+                    break;
+                case "delete":
+                    if (row - 1 == 0 || colInt - 1 == 0) {
+                        System.out.println("Nem törölhetsz falat!");
+                    } else if (gameBoard.getCell(row - 1, colInt - 1) == '_') {
+                        System.out.println("Ez a mező már üres!");
+                    } else if (gameBoard.getCell(row - 1, colInt - 1) == 'H') {
+                        System.out.println("A Hőst nem törölheted a pályáról!");
+                    } else {
+                        gameBoard.setCell(row - 1,colInt - 1, '_');
+                    }
+            }
+            gameBoard.displayBoard();
+
         }
-        gameBoard.displayBoard();
+        //consoleController.closeScanner();
     }
 
     public char[][] createEmptyBoard(int size) {

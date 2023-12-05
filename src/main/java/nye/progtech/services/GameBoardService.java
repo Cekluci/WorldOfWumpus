@@ -2,11 +2,12 @@ package nye.progtech.services;
 
 import nye.progtech.DAO.BoardDetails;
 import nye.progtech.DAO.Tile;
+import nye.progtech.controller.ConsoleController;
 import nye.progtech.controller.Menu;
 import nye.progtech.model.GameBoard;
 import nye.progtech.model.Hero;
 import nye.progtech.repository.DBRepositoryInterface;
-import nye.progtech.util.FileLoader;
+import nye.progtech.fileUtils.FileLoader;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,14 +19,15 @@ public class GameBoardService {
 
     private Hero hero;
     private GameBoard gameBoard;
+    private ConsoleController consoleController = new ConsoleController();
 
     public GameBoardService(DBRepositoryInterface dbRepository) {
         this.dbRepository = dbRepository;
     }
 
-    public GameBoard performFileLoading(String directory, Menu menu) {
+    public GameBoard performFileLoading(String directory) {
         try {
-            String choosenFile = menu.chooseFileFromDirectory(directory);
+            String choosenFile = consoleController.chooseFileFromDirectory(directory);
             if (choosenFile != null) {
                 GameBoard gameBoard = FileLoader.loadBoard(choosenFile);
                 return gameBoard;

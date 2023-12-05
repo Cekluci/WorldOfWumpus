@@ -106,7 +106,7 @@ public class Game {
                 hero.setRow(nextStepRow);
                 hero.setColumn(nextStepCol);
                 gameBoard.setCell(nextStepRow, nextStepCol, 'H');
-                System.out.println(hero.getGold());
+                System.out.println(getGold());
                 break;
             case 'U':
                 System.out.println("A Wumpus megtalált, így sajnos meghaltál.");
@@ -341,5 +341,9 @@ public class Game {
         System.out.println(west + "W ← " + defaultColor + "+" + east + " → E");
         System.out.println("    " + south + "↓    ");
         System.out.println("    " + south + "S    " + defaultColor);
+    }
+
+    private String getGold() {
+        return "Gratulálok! Megszerezted az aranyat! Vidd vissza a kiindulási helyre!";
     }
 }

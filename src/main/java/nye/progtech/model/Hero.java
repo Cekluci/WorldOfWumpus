@@ -54,7 +54,4 @@ public class Hero {
         return Character.toUpperCase(columnLabel) - 'A';
     }
 
-    public String getGold() {
-        return "Gratulálok! Megszerezted az aranyat! Vidd vissza a kiindulási helyre!";
-    }
 }

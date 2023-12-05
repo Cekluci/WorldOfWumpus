@@ -1,8 +1,10 @@
-package nye.progtech.util;
+package nye.progtech.fileUtils;
 
 import nye.progtech.model.GameBoard;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileLoader {
     public static GameBoard loadBoard(String fileName) throws IOException {
@@ -40,5 +42,21 @@ public class FileLoader {
 
             return new GameBoard(size, board, originalBoard, heroColumn, heroRow, heroDirection, fileName);
         }
+    }
+
+    public static List<String> listFilesInDirectory(String directoryPath) {
+        File directory = new File(directoryPath);
+        File[] files = directory.listFiles();
+        List<String> fileNames = new ArrayList<>();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    fileNames.add(file.getName());
+                }
+            }
+        }
+
+        return fileNames;
     }
 }
