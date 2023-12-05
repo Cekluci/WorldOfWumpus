@@ -5,7 +5,6 @@ import nye.progtech.DAO.Tile;
 import nye.progtech.Game.Game;
 import nye.progtech.Game.MapEditor;
 import nye.progtech.controller.ConsoleController;
-import nye.progtech.controller.Menu;
 import nye.progtech.controller.MenuOption;
 import nye.progtech.db.DBInitializer;
 import nye.progtech.fileUtils.JSONHandler;
@@ -15,10 +14,8 @@ import nye.progtech.model.Hero;
 import nye.progtech.repository.DBRepositoryImpl;
 import nye.progtech.services.GameBoardService;
 
-import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
 
@@ -33,19 +30,14 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
 
-        //Scanner scanner = new Scanner(System.in);
         ConsoleController consoleController = new ConsoleController();
         GameBoardService gameBoardService = new GameBoardService(dbRepository);
 
-        //GameBoard gameBoard = null;
 
         //DB inicializálás és előzetes feltöltés
-        DBInitializer.initializeDB();
-        DBInitializer.uploadDBWorld();
+        DBInitializer.dbSetup();
 
-        DataSource dataSource = DBInitializer.createDataSource();
-        DBRepositoryInterface dbRepository = new DBRepositoryImpl(dataSource);
-
+        DBRepositoryInterface dbRepository = new DBRepositoryImpl();
 
         String userName = consoleController.promptForUserName();
         consoleController.greetUser(userName);
@@ -79,7 +71,7 @@ public class Main {
                     case BETOLTESADATBAZISBOL: //KÉSZ
                         System.out.println("Adatbázisból betöltés lesz");
                         String choosenMap = consoleController.chooseFileFromDB();
-                        BoardDetails bd = (BoardDetails) dbRepository.selectBoardDetailsByMapName(choosenMap);
+                        BoardDetails bd = dbRepository.selectBoardDetailsByMapName(choosenMap);
                         List<Tile> tiles = dbRepository.selectTilesByMapName(choosenMap);
                         System.out.println("----------betöltött map-----------");
                         gameBoard = gameBoardService.loadBoardFromDB(tiles, bd);

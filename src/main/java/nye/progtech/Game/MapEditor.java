@@ -2,61 +2,33 @@ package nye.progtech.Game;
 
 import nye.progtech.controller.ConsoleController;
 import nye.progtech.model.GameBoard;
-import nye.progtech.model.Hero;
-
-import java.util.Scanner;
+import nye.progtech.repository.DBRepositoryImpl;
+import nye.progtech.repository.DBRepositoryInterface;
 
 public class MapEditor {
 
-    private Hero hero;
-    private GameBoard gameBoard;
-    private Scanner scanner = new Scanner(System.in);
+    private GameBoard gameBoard = new GameBoard();
     private ConsoleController consoleController = new ConsoleController();
-
-    public MapEditor(Hero hero, GameBoard gameBoard) {
-        this.hero = hero;
-        this.gameBoard = gameBoard;
-
-    }
+    DBRepositoryInterface dbRepository = new DBRepositoryImpl();
 
     public MapEditor() {
     }
 
-    public Hero getHero() {
-        return hero;
-    }
-
-    public void setHero(Hero hero) {
-        this.hero = hero;
-    }
-
-    public GameBoard getGameBoard() {
-        return gameBoard;
-    }
-
-    public void setGameBoard(GameBoard gameBoard) {
-        this.gameBoard = gameBoard;
-    }
 
     public void startEditor() {
-        Scanner scanner = new Scanner(System.in);
-        boolean running = true;
 
         System.out.println("Üdvözöllek a pályaszerkesztőben!");
 
-        //while (running) {
-            int size = consoleController.askForBoardSize();
-            int heroRow = consoleController.askForHeroRow();
-            char heroColC = consoleController.askForHeroColumn();
-            char heroDir = consoleController.askForHeroDirection();
-            String mapName = consoleController.askForMapName();
+        int size = consoleController.askForBoardSize();
+        int heroRow = consoleController.askForHeroRow();
+        char heroColC = consoleController.askForHeroColumn();
+        char heroDir = consoleController.askForHeroDirection();
+        String mapName = consoleController.askForMapName();
 
-            char[][] newBoard = createEmptyBoard(size);
+        char[][] newBoard = gameBoard.createEmptyBoard(size);
 
-            GameBoard newGameBoard = new GameBoard(size, newBoard, newBoard, heroColC, heroRow, heroDir, mapName);
+        GameBoard newGameBoard = new GameBoard(size, newBoard, newBoard, heroColC, heroRow, heroDir, mapName);
 
-
-        //}
         newGameBoard.displayBoard();
         System.out.println("-----szerkesztés után-----");
         editGameBoard(newGameBoard);
@@ -95,12 +67,18 @@ public class MapEditor {
                     } else if (gameBoard.getCell(row - 1, colInt - 1) != '_') {
                         System.out.println("Ez a mező már foglalt!");
                     } else {
-                        if (wumpusCount > 1 ){
+                        if (gameBoard.getSize() <= 8 && wumpusCount > 1 ){
                             System.out.println("Nem lehet 1-nél több Wumpus a pályán!");
-                        } else if (goldCount > 1) {
-                            System.out.println("Nem lehet 1-nél több aranya a pályán!");
+                        } else if (gameBoard.getSize() >= 9 && gameBoard.getSize() <= 14 && wumpusCount > 2) {
+                            System.out.println("Nem lehet 2-nél több Wumpus a pályán!");
+                        } else if (gameBoard.getSize() > 14 && wumpusCount > 3) {
+                            System.out.println("Nem lehet 3-nál több Wumpus a pályán!");
                         } else {
-                            gameBoard.setCell(row - 1, colInt - 1, content);
+                            if (goldCount > 1) {
+                                System.out.println("Nem lehet 1-nél több arany a pályán!");
+                            } else {
+                                gameBoard.setCell(row - 1, colInt - 1, content);
+                            }
                         }
                     }
                     break;
@@ -118,20 +96,9 @@ public class MapEditor {
             gameBoard.displayBoard();
 
         }
-        //consoleController.closeScanner();
+        dbRepository.saveGameBoardToDB(gameBoard);
+        dbRepository.saveGameBoardDetailsToDB(gameBoard);
+        System.out.println("A tábla mentve az adatbázisba.");
     }
 
-    public char[][] createEmptyBoard(int size) {
-        char[][] emptyBoard = new char[size][size];
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (i == 0 || j == 0 || i == 5 || j == 5) {
-                    emptyBoard[i][j] = 'W';
-                } else {
-                    emptyBoard[i][j] = '_';
-                }
-            }
-        }
-        return emptyBoard;
-    }
 }

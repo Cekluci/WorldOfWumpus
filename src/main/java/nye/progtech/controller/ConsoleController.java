@@ -102,8 +102,8 @@ public class ConsoleController {
     }
 
     public String chooseFileFromDB() {
-        DataSource dataSource = DBInitializer.createDataSource();
-        DBRepositoryInterface dbRepository = new DBRepositoryImpl(dataSource);
+        //DataSource dataSource = DBInitializer.createDataSource();
+        DBRepositoryInterface dbRepository = new DBRepositoryImpl();
 
         List<String> mapNames = dbRepository.getAllMapNames();
         if (mapNames.isEmpty()) {

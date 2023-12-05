@@ -11,20 +11,35 @@ import java.sql.Statement;
 public class DBInitializer {
     private static DataSource dataSource;
 
+    public static void dbSetup() throws SQLException {
+        createDataSource();
+        initializeDB();
+        uploadDBWorld();
+
+    }
+
     public static DataSource getDataSource() {
+        if (dataSource == null) {
+            createDataSource();
+        }
         return dataSource;
     }
 
-    public static JdbcDataSource createDataSource() {
-        JdbcDataSource dataSource = new JdbcDataSource();
-        dataSource.setURL("jdbc:h2:mem:wumpusgame;DB_CLOSE_DELAY=-1");
-        dataSource.setUser("sa");
-        dataSource.setPassword("");
-        return dataSource;
+    public static void createDataSource() {
+        JdbcDataSource ds = new JdbcDataSource();
+        ds.setURL("jdbc:h2:mem:wumpusgame;DB_CLOSE_DELAY=-1");
+        ds.setUser("sa");
+        ds.setPassword("");
+        //return dataSource;
+
+        dataSource = ds;
     }
 
     public static void initializeDB() throws SQLException {
-        JdbcDataSource dataSource = createDataSource();
+        //JdbcDataSource dataSource = createDataSource();
+        if (dataSource == null) {
+            createDataSource();
+        }
         //H2 webserver engedélyezése
         Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8082").start();
 
@@ -54,7 +69,10 @@ public class DBInitializer {
     }
 
     public static void uploadDBWorld() {
-        JdbcDataSource dataSource = createDataSource();
+        if (dataSource == null) {
+            createDataSource();
+        }
+        //JdbcDataSource dataSource = createDataSource();
         String dbWorldTilesSql = "INSERT INTO tiles (rowindex, columnindex, content, mapname) VALUES (" +
                 "0, 0, \'W\', \'dbWorldTest\')," +
                 "(0, 1, \'W\', \'dbWorldTest\')," +

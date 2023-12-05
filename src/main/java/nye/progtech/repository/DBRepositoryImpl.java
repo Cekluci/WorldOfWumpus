@@ -2,6 +2,7 @@ package nye.progtech.repository;
 
 import nye.progtech.DAO.BoardDetails;
 import nye.progtech.DAO.Tile;
+import nye.progtech.db.DBInitializer;
 import nye.progtech.model.GameBoard;
 import nye.progtech.model.Hero;
 
@@ -16,8 +17,8 @@ import java.util.List;
 public class DBRepositoryImpl implements DBRepositoryInterface {
     private DataSource dataSource;
 
-    public DBRepositoryImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public DBRepositoryImpl() {
+        this.dataSource = DBInitializer.getDataSource();
     }
 
     //olvassuk ki a map-ot az adatbázisból
