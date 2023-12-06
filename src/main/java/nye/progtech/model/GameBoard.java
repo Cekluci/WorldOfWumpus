@@ -1,6 +1,7 @@
 package nye.progtech.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import nye.progtech.Colors;
 
 public class GameBoard {
     private int size;
@@ -107,24 +108,35 @@ public class GameBoard {
     }
 
     public void displayBoard() {
-        // Fejléc sorok számának kiírása
-        System.out.print("   "); // Három szóköz a sorszámozás előtt
+        System.out.print("   ");
         for (int i = 0; i < size; i++) {
             System.out.print((char)('A' + i) + " ");
         }
-        System.out.println(); // Új sor a tábla tetején
+        System.out.println();
 
         for (int i = 0; i < size; i++) {
-            // Sorok számának kiírása
             System.out.print((i + 1) + " ");
             if (i < 9) {
                 System.out.print(" ");
             }
 
             for (int j = 0; j < size; j++) {
-                System.out.print(board[i][j] + " "); // Tábla aktuális mezőjének kiírása
+                if (board[i][j] == 'W'){
+                    System.out.print(Colors.ANSI_PURPLE + board[i][j] + " " + Colors.ANSI_RESET);
+                } else if (board[i][j] == 'H') {
+                    System.out.print(Colors.ANSI_BLUE + board[i][j] + " " + Colors.ANSI_RESET);
+                } else if (board[i][j] == 'P') {
+                    System.out.print(Colors.ANSI_CYAN + board[i][j] + " " + Colors.ANSI_RESET);
+                } else if (board[i][j] == 'G') {
+                    System.out.print(Colors.ANSI_YELLOW + board[i][j] + " " + Colors.ANSI_RESET);
+                } else if (board[i][j] == 'U') {
+                    System.out.print(Colors.ANSI_RED + board[i][j] + " " + Colors.ANSI_RESET);
+                } else {
+                    System.out.print(board[i][j] + " ");
+                }
+
             }
-            System.out.println(); // Új sor minden sor után
+            System.out.println();
         }
     }
 

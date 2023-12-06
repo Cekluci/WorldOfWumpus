@@ -1,0 +1,1 @@
+{"size":6,"board":["WWWWWW","W___PW","WUGP_W","WH___W","W__P_W","WWWWWW"],"originalBoard":["WWWWWW","W___PW","WU_P_W","W____W","W__P_W","WWWWWW"],"hero":{"column":1,"row":3,"direction":"N","arrows":1,"hasGold":false,"isDead":false},"mapName":"testWorld.txt"}

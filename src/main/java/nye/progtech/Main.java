@@ -1,6 +1,7 @@
 package nye.progtech;
 
 import nye.progtech.DAO.BoardDetails;
+import nye.progtech.DAO.ScoreBoard;
 import nye.progtech.DAO.Tile;
 import nye.progtech.Game.Game;
 import nye.progtech.Game.MapEditor;
@@ -121,6 +122,15 @@ public class Main {
                         Game game = new Game(hero, gameBoard, player);
                         game.start();
                         break;
+                    case SCOREBOARD:
+                        List<ScoreBoard> scoreboard = dbRepository.getScoreBoard();
+
+                        System.out.println("Scoreboard:");
+                        for (int i = 0; i < scoreboard.size(); i++) {
+                            ScoreBoard entry = scoreboard.get(i);
+                            System.out.printf("%d. %s - %d pont\n", i + 1, entry.getPlayerName(), entry.getPlayerScore());
+                        }
+                        break;
                     case KILEPES: //KÉSZ
                         isRunning = false;
                         System.out.println("Köszi, hogy játszottál, " + userName + "!");
@@ -128,8 +138,10 @@ public class Main {
                         break;
                     default:
                         System.out.println("Rossz választás, próbáld újra, kedves " + userName);
+                        break;
                 }
             }
         }
     }
+
 }

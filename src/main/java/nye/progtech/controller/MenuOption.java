@@ -6,7 +6,8 @@ public enum MenuOption {
     BETOLTESADATBAZISBOL(3, "Betöltés Adatbázisból"),
     METESADATBAZISBA(4, "Mentés Adatbázisba"),
     JATEK(5, "Játék indítása"),
-    KILEPES(6, "Kilépés");
+    SCOREBOARD(6, "Scoreboard"),
+    KILEPES(7, "Kilépés");
 
     private final int value;
     private final String description;

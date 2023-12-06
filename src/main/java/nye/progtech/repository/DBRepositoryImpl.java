@@ -1,6 +1,7 @@
 package nye.progtech.repository;
 
 import nye.progtech.DAO.BoardDetails;
+import nye.progtech.DAO.ScoreBoard;
 import nye.progtech.DAO.Tile;
 import nye.progtech.db.DBInitializer;
 import nye.progtech.model.GameBoard;
@@ -151,5 +152,24 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<ScoreBoard> getScoreBoard() {
+        List<ScoreBoard> scoreboard = new ArrayList<>();
+        String sql = "SELECT playnername, playerscore FROM scoreboard ORDER BY playerscore DESC";
+
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                String playerName = rs.getString("playername");
+                int playerScore = rs.getInt("playerscore");
+                scoreboard.add(new ScoreBoard(playerName, playerScore));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return scoreboard;
     }
 }

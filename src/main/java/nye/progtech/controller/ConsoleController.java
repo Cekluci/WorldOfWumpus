@@ -1,11 +1,13 @@
 package nye.progtech.controller;
 
+import nye.progtech.Colors;
 import nye.progtech.db.DBInitializer;
 import nye.progtech.fileUtils.FileLoader;
 import nye.progtech.repository.DBRepositoryImpl;
 import nye.progtech.repository.DBRepositoryInterface;
 
 import javax.sql.DataSource;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,17 +27,17 @@ public class ConsoleController {
 
 
     public String promptForUserName() {
-        System.out.println("Szia Idegen! Kérlek add meg a neved: ");
+        System.out.println(Colors.ANSI_GREEN + "Szia Idegen! Kérlek add meg a neved: " + Colors.ANSI_RESET);
         return scanner.nextLine();
     }
 
     public void greetUser(String userName) {
-        System.out.println("Üdvözöllek, " + userName + "! Kezdjünk is neki a játéknak.");
+        System.out.println(Colors.ANSI_GREEN + "Üdvözöllek, " + userName + "! Kezdjünk is neki a játéknak." + Colors.ANSI_RESET);
     }
 
     //Game
     public String askForGameAction() {
-        System.out.println("Az alábbi parancsok közül választhatsz, de mindig vedd figyelembe, ");
+        System.out.println(Colors.ANSI_YELLOW + "Az alábbi parancsok közül választhatsz, de mindig vedd figyelembe, ");
         System.out.println("hogy az irányok az éppen aktuális irány alapján kerülnek végrehajtásra!");
         System.out.println("forward: Lépés előre.");
         System.out.println("backward: Lépés hátra.");
@@ -44,7 +46,7 @@ public class ConsoleController {
         System.out.println("direction east|west|north|south: Hős irányának beállítása.");
         System.out.println("fire: Nyíl kilővése az aktuális irányba.");
         System.out.println("save: Játékállás elmentése.");
-        System.out.println("exit: Kilépés a játékból.");
+        System.out.println("exit: Kilépés a játékból." + Colors.ANSI_RESET);
         System.out.println("Adj meg egy parancsot: ");
         return scanner.nextLine();
     }
@@ -83,21 +85,26 @@ public class ConsoleController {
 
     //Main menu
     public void displayMainMenu() {
-        System.out.println("\n--- Főmenü ---");
+        System.out.println(Colors.ANSI_BLUE + "\n--- Főmenü ---" + Colors.ANSI_RESET);
         for (MenuOption option : MenuOption.values()) {
             System.out.println(option.getValue() + ". " + option.getDescription());
         }
     }
     public void displayFormatSelectorMenu() {
-        System.out.println("--- Formátumok ---");
+        System.out.println(Colors.ANSI_BLUE + "--- Formátumok ---" + Colors.ANSI_RESET);
         for (FileFormat format : FileFormat.values()) {
             System.out.println(format.getValue() + ". " + format.getDescription());
         }
     }
 
     public MenuOption getSelectedOption() {
-        int selectedOptionIndex = scanner.nextInt();
-        return MenuOption.fromInt(selectedOptionIndex);
+        try {
+            int selectedOptionIndex = scanner.nextInt();
+            return MenuOption.fromInt(selectedOptionIndex);
+        } catch (InputMismatchException e) {
+            scanner.nextLine();
+            return MenuOption.fromInt(-1);
+        }
     }
 
     public FileFormat getSelectedFileFormat() {
@@ -109,7 +116,7 @@ public class ConsoleController {
         List<String> fileNames = FileLoader.listFilesInDirectory(directoryPath);
 
         if (fileNames.isEmpty()) {
-            System.out.println("Nincsenek betöltendő file-ok.");
+            System.out.println(Colors.ANSI_RED + "Nincsenek betöltendő file-ok." + Colors.ANSI_RESET);
             return null;
         }
 
@@ -121,7 +128,7 @@ public class ConsoleController {
         do {
             System.out.println("Válassz egy világot: ");
             while (!scanner.hasNextInt()) {
-                System.out.println("Érvénytelen választás, próbáld újra!");
+                System.out.println(Colors.ANSI_RED + "Érvénytelen választás, próbáld újra!" + Colors.ANSI_RESET);
                 scanner.next();
             }
             choice = scanner.nextInt();
@@ -136,7 +143,7 @@ public class ConsoleController {
 
         List<String> mapNames = dbRepository.getAllMapNames();
         if (mapNames.isEmpty()) {
-            System.out.println("Nincsenek elmentett pályák az adatbázisban.");
+            System.out.println(Colors.ANSI_YELLOW + "Nincsenek elmentett pályák az adatbázisban." + Colors.ANSI_RESET);
             return null;
         }
 
@@ -148,7 +155,7 @@ public class ConsoleController {
         do {
             System.out.println("Válassz egy világot az adatbázisból.");
             while (!scanner.hasNextInt()) {
-                System.out.println("Érvénytelen választás, próbáld újra!");
+                System.out.println(Colors.ANSI_RED + "Érvénytelen választás, próbáld újra!" + Colors.ANSI_RESET);
                 scanner.next();
             }
             choice = scanner.nextInt();

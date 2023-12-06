@@ -1,5 +1,6 @@
 package nye.progtech.Game;
 
+import nye.progtech.Colors;
 import nye.progtech.controller.ConsoleController;
 import nye.progtech.fileUtils.JSONHandler;
 import nye.progtech.model.GameBoard;
@@ -45,9 +46,9 @@ public class Game {
 
     public void start() {
         running = true;
+        gameBoard.displayBoard();
         while (running) {
             iranymutatas(hero.getDirection());
-            gameBoard.displayBoard();
             String command = consoleController.askForGameAction();
 
             char heroDirection = hero.getDirection();
@@ -106,7 +107,7 @@ public class Game {
     public void HeroChangeDirection(char newDir) {
         char currentDirection = hero.getDirection();
         if (currentDirection == newDir) {
-            System.out.println("Már ebben az irányban állsz.");
+            System.out.println(Colors.ANSI_YELLOW + "Már ebben az irányban állsz." + Colors.ANSI_RESET);
         } else {
             hero.setDirection(newDir);
         }
@@ -233,12 +234,12 @@ public class Game {
             arrows--;
             hero.setArrows(arrows);
             if (isWumpusInLineOfFire()) {
-                System.out.println("A Wumpus meghalt!");
+                System.out.println(Colors.ANSI_PURPLE + "A Wumpus meghalt!" + Colors.ANSI_RESET);
                 whereIsTheWumpus();
                 gameBoard.setCell(wumpusRow, wumpusCol, '_');
                 playerScore+= 2;
             } else {
-                System.out.println("Nem találtad el a wumpust.");
+                System.out.println(Colors.ANSI_RED + "Nem találtad el a wumpust." + Colors.ANSI_RESET);
             }
         }
         System.out.println("Nyilaid száma: " + hero.getArrows());
@@ -309,11 +310,11 @@ public class Game {
     private void updateBoardAfterSteps(char nextCell, int nextStepRow, int nextStepCol) {
         switch (nextCell) {
             case 'W':
-                System.out.println("Falba ütköznél, érvénytelen lépés!");
+                System.out.println(Colors.ANSI_YELLOW + "Falba ütköznél, érvénytelen lépés!" + Colors.ANSI_RESET);
                 break;
             case 'G':
-                System.out.println("Gratulálok! Megtaláltad az aranyat!");
-                System.out.println("Vidd vissza a kiindulási helyre!");
+                System.out.println(Colors.ANSI_BLUE + "Gratulálok! Megtaláltad az aranyat!");
+                System.out.println("Vidd vissza a kiindulási helyre!" + Colors.ANSI_RESET);
                 hero.setHasGold(true);
                 playerScore+= 5;
                 gameBoard.setCell(hero.getRow(), hero.getColumn(), '_');
@@ -322,7 +323,7 @@ public class Game {
                 gameBoard.setCell(nextStepRow, nextStepCol, 'H');
                 break;
             case 'U':
-                System.out.println("A Wumpus megtalált, így sajnos meghaltál.");
+                System.out.println(Colors.ANSI_RED + "A Wumpus megtalált, így sajnos meghaltál." + Colors.ANSI_RESET);
                 playerScore -= 2;
                 hero.setIsDead(false);
                 player.setPlayerScore(playerScore);
@@ -331,14 +332,18 @@ public class Game {
 
                 break;
             case 'P':
-                System.out.println("Verembe estél, egy nyilat vesztettél.");
+                System.out.println(Colors.ANSI_YELLOW + "Verembe estél, egy nyilat vesztettél." + Colors.ANSI_RESET);
                 gameBoard.setCell(hero.getRow(), hero.getColumn(), gameBoard.getCellFromOriginalBoard(hero.getRow(), hero.getColumn()));
                 hero.setRow(nextStepRow);
                 hero.setColumn(nextStepCol);
                 gameBoard.setCell(nextStepRow, nextStepCol, 'H');
+                if (arrows > 0) {
+                    arrows--;
+                    hero.setArrows(arrows);
+                }
                 break;
             case '_':
-                System.out.println("Érvényes lépés!");
+                System.out.println(Colors.ANSI_YELLOW + "Érvényes lépés!" + Colors.ANSI_RESET);
                 gameBoard.setCell(hero.getRow(), hero.getColumn(), gameBoard.getCellFromOriginalBoard(hero.getRow(), hero.getColumn()));
                 hero.setRow(nextStepRow);
                 hero.setColumn(nextStepCol);
@@ -353,7 +358,7 @@ public class Game {
         DBRepositoryInterface dbRepository = new DBRepositoryImpl();
 
         if (hero.getHasGold() && heroCurrentCol == baseCol && heroCurrentRow == baseRow) {
-            System.out.println("Gratulálok, sikeresen teljesítetted a pályát!");
+            System.out.println(Colors.ANSI_YELLOW + "Gratulálok, sikeresen teljesítetted a pályát!" + Colors.ANSI_RESET);
             playerScore+= 10;
             player.setPlayerScore(playerScore);
             dbRepository.saveScoreBoardToDB(player);
@@ -364,14 +369,15 @@ public class Game {
     }
 
     private void saveGameState() {
+        DBRepositoryInterface dbRepository = new DBRepositoryImpl();
         dbRepository.saveGameBoardToDB(gameBoard);
         dbRepository.saveGameBoardDetailsToDB(gameBoard);
         JSONHandler jsonHandler = new JSONHandler();
-        jsonHandler.saveToJSON(gameBoard, gameBoard.getMapName() + ".json");
+        jsonHandler.saveToJSON(gameBoard, gameBoard.getMapName());
     }
 
     public void iranymutatas (char direction) {
-        String defaultColor = "\u001B[0m";
+        String defaultColor = Colors.ANSI_RESET;
         String north = "";
         String east = "";
         String west = "";
@@ -379,28 +385,28 @@ public class Game {
 
         switch (direction) {
             case 'N':
-                north = "\u001B[32m";
-                east = "\u001B[0m";
-                west = "\u001B[0m";
-                south = "\u001B[0m";
+                north = Colors.ANSI_GREEN;
+                east = Colors.ANSI_RESET;
+                west = Colors.ANSI_RESET;
+                south = Colors.ANSI_RESET;
                 break;
             case 'E':
-                north = "\u001B[0m";
-                east = "\u001B[32m";
-                west = "\u001B[0m";
-                south = "\u001B[0m";
+                north = Colors.ANSI_RESET;
+                east = Colors.ANSI_GREEN;
+                west = Colors.ANSI_RESET;
+                south = Colors.ANSI_RESET;
                 break;
             case 'W':
-                north = "\u001B[0m";
-                east = "\u001B[0m";
-                west = "\u001B[32m";
-                south = "\u001B[0m";
+                north = Colors.ANSI_RESET;
+                east = Colors.ANSI_RESET;
+                west = Colors.ANSI_GREEN;
+                south = Colors.ANSI_RESET;
                 break;
             case 'S':
-                north = "\u001B[0m";
-                east = "\u001B[0m";
-                west = "\u001B[0m";
-                south = "\u001B[32m";
+                north = Colors.ANSI_RESET;
+                east = Colors.ANSI_RESET;
+                west = Colors.ANSI_RESET;
+                south = Colors.ANSI_GREEN;
                 break;
         }
 
