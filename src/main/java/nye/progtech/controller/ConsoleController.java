@@ -1,12 +1,9 @@
 package nye.progtech.controller;
 
 import nye.progtech.Colors;
-import nye.progtech.db.DBInitializer;
 import nye.progtech.fileUtils.FileLoader;
 import nye.progtech.repository.DBRepositoryImpl;
 import nye.progtech.repository.DBRepositoryInterface;
-
-import javax.sql.DataSource;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;

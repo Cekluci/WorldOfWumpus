@@ -9,7 +9,6 @@ import nye.progtech.controller.ConsoleController;
 import nye.progtech.controller.FileFormat;
 import nye.progtech.controller.MenuOption;
 import nye.progtech.db.DBInitializer;
-import nye.progtech.fileUtils.JSONHandler;
 import nye.progtech.model.Player;
 import nye.progtech.repository.DBRepositoryInterface;
 import nye.progtech.model.GameBoard;
@@ -134,6 +133,7 @@ public class Main {
                     case KILEPES: //KÉSZ
                         isRunning = false;
                         System.out.println("Köszi, hogy játszottál, " + userName + "!");
+                        consoleController.closeScanner();
                         System.exit(0);
                         break;
                     default:

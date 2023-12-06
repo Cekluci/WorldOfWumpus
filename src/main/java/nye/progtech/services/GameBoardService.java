@@ -3,7 +3,6 @@ package nye.progtech.services;
 import nye.progtech.DAO.BoardDetails;
 import nye.progtech.DAO.Tile;
 import nye.progtech.controller.ConsoleController;
-import nye.progtech.controller.Menu;
 import nye.progtech.model.GameBoard;
 import nye.progtech.model.Hero;
 import nye.progtech.repository.DBRepositoryInterface;
