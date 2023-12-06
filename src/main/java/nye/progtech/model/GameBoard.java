@@ -144,7 +144,7 @@ public class GameBoard {
         char[][] emptyBoard = new char[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (i == 0 || j == 0 || i == 5 || j == 5) {
+                if (i == 0 || j == 0 || i == size - 1 || j == size - 1) {
                     emptyBoard[i][j] = 'W';
                 } else {
                     emptyBoard[i][j] = '_';

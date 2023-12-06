@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.util.List;
 
 public class GameBoardService {
-    private DBRepositoryInterface dbRepository;
+    private final DBRepositoryInterface dbRepository;
     private DBRepositoryInterface tileDAO;
 //    private GameBoard board;
 
     private Hero hero;
     private GameBoard gameBoard;
-    private ConsoleController consoleController = new ConsoleController();
+    private final ConsoleController consoleController = new ConsoleController();
 
     public GameBoardService(DBRepositoryInterface dbRepository) {
         this.dbRepository = dbRepository;
@@ -27,7 +27,7 @@ public class GameBoardService {
 
     public GameBoard performFileLoading(String directory) {
         try {
-            String choosenFile = consoleController.chooseFileFromDirectory(directory);
+            String choosenFile = ConsoleController.chooseFileFromDirectory(directory);
             if (choosenFile != null) {
                 GameBoard gameBoard = FileLoader.loadBoard(choosenFile);
                 return gameBoard;
@@ -40,7 +40,7 @@ public class GameBoardService {
     }
 
     public GameBoard performJSONLoading(String directory) {
-        String choosenFile = consoleController.chooseFileFromDirectory(directory);
+        String choosenFile = ConsoleController.chooseFileFromDirectory(directory);
         if (choosenFile != null) {
             GameBoard gameBoard = JSONHandler.loadGameBoardFromJson(choosenFile);
             return gameBoard;
@@ -56,7 +56,7 @@ public class GameBoardService {
 
         for (Tile tile : tiles) {
             board[tile.getRow()][tile.getColumn()] = tile.getContent();
-            if (originalBoard[tile.getRow()][tile.getColumn()] == 'G' || originalBoard[tile.getRow()][tile.getColumn()] == 'H') {
+            if (tile.getContent() == 'G' || tile.getContent() == 'H' || tile.getContent() == 'U') {
                 originalBoard[tile.getRow()][tile.getColumn()] = '_';
             } else {
                 originalBoard[tile.getRow()][tile.getColumn()] = tile.getContent();
@@ -64,9 +64,9 @@ public class GameBoardService {
         }
 
         //heroRow
-        int heroRow = bd.getHeroRowIndex();
+        int heroRow = bd.getHeroRowIndex() + 1;
         //heroColumn
-        char heroColumn = (char) (bd.getHeroColIndex() + 64);
+        char heroColumn = (char) (bd.getHeroColIndex() + 65);
         //heroDirection
         char heroDirection = bd.getHeroDirection();
         //fileName

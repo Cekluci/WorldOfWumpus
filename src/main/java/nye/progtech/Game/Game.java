@@ -14,18 +14,18 @@ import java.util.Scanner;
 
 
 public class Game {
-    private Hero hero;
-    private GameBoard gameBoard;
-    private Player player;
+    private final Hero hero;
+    private final GameBoard gameBoard;
+    private final Player player;
     private int wumpusRow;
     private int wumpusCol;
 
     private int arrows;
-    private int baseRow;
-    private int baseCol;
+    private final int baseRow;
+    private final int baseCol;
     private int playerScore;
     private static DBRepositoryInterface dbRepository;
-    private ConsoleController consoleController = new ConsoleController();
+    private final ConsoleController consoleController = new ConsoleController();
     private boolean running;
 
 
@@ -75,19 +75,19 @@ public class Game {
                     isSuccessfulGame();
                     break;
                 case "direction east":
-                    HeroChangeDirection('E');
+                    hero.HeroChangeDirection('E');
                     playerScore++;
                     break;
                 case "direction west":
-                    HeroChangeDirection('W');
+                    hero.HeroChangeDirection('W');
                     playerScore++;
                     break;
                 case "direction north":
-                    HeroChangeDirection('N');
+                    hero.HeroChangeDirection('N');
                     playerScore++;
                     break;
                 case "direction south":
-                    HeroChangeDirection('S');
+                    hero.HeroChangeDirection('S');
                     playerScore++;
                     break;
                 case "fire":
@@ -103,17 +103,22 @@ public class Game {
             gameBoard.displayBoard();
         }
     }
+    public void HeroTakeStepForward(char direction) {
+        int currentRow = hero.getRow();
+        int currentCol = hero.getColumn();
 
-    public void HeroChangeDirection(char newDir) {
-        char currentDirection = hero.getDirection();
-        if (currentDirection == newDir) {
-            System.out.println(Colors.ANSI_YELLOW + "Már ebben az irányban állsz." + Colors.ANSI_RESET);
-        } else {
-            hero.setDirection(newDir);
-        }
+        hero.HeroToStepForward(direction);
+
+        int nextStepRow = hero.getRow();
+        int nextStepCol = hero.getColumn();
+        char nextCell = gameBoard.getCell(nextStepRow, nextStepCol);
+
+        updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
+        gameBoard.setCell(currentRow, currentCol, gameBoard.getCellFromOriginalBoard(currentRow, currentCol));
+        gameBoard.setCell(nextStepRow, nextStepCol, 'H');
     }
 
-    public void HeroTakeStepForward(char direction) {
+    public void HeroTakeStepForward_old(char direction) {
         int nextStepRow = 0;
         int nextStepCol = 0;
 
@@ -138,7 +143,7 @@ public class Game {
 
         char nextCell = gameBoard.getCell(nextStepRow, nextStepCol);
 
-        updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
+        //updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
 
 
     }
@@ -168,7 +173,7 @@ public class Game {
 
         char nextCell = gameBoard.getCell(nextStepRow, nextStepCol);
 
-        updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
+        //updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
 
     }
 
@@ -197,7 +202,7 @@ public class Game {
 
         char nextCell = gameBoard.getCell(nextStepRow, nextStepCol);
 
-        updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
+        //updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
 
     }
     public void HeroTakeStepRight(char direction) {
@@ -225,7 +230,7 @@ public class Game {
 
         char nextCell = gameBoard.getCell(nextStepRow, nextStepCol);
 
-        updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
+        //updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol,);
 
     }
 
@@ -236,7 +241,7 @@ public class Game {
             if (isWumpusInLineOfFire()) {
                 System.out.println(Colors.ANSI_PURPLE + "A Wumpus meghalt!" + Colors.ANSI_RESET);
                 whereIsTheWumpus();
-                gameBoard.setCell(wumpusRow, wumpusCol, '_');
+                gameBoard.setCell(wumpusRow, wumpusCol, gameBoard.getCellFromOriginalBoard(wumpusRow, wumpusCol));
                 playerScore+= 2;
             } else {
                 System.out.println(Colors.ANSI_RED + "Nem találtad el a wumpust." + Colors.ANSI_RESET);
@@ -317,26 +322,22 @@ public class Game {
                 System.out.println("Vidd vissza a kiindulási helyre!" + Colors.ANSI_RESET);
                 hero.setHasGold(true);
                 playerScore+= 5;
-                gameBoard.setCell(hero.getRow(), hero.getColumn(), '_');
-                hero.setRow(nextStepRow);
-                hero.setColumn(nextStepCol);
-                gameBoard.setCell(nextStepRow, nextStepCol, 'H');
+                //gameBoard.setCell(hero.getRow(), hero.getColumn(), gameBoard.getCellFromOriginalBoard(hero.getRow(), hero.getColumn()));
+                //hero.setRow(nextStepRow);
+                //hero.setColumn(nextStepCol);
+                //gameBoard.setCell(nextStepRow, nextStepCol, 'H');
                 break;
             case 'U':
                 System.out.println(Colors.ANSI_RED + "A Wumpus megtalált, így sajnos meghaltál." + Colors.ANSI_RESET);
-                playerScore -= 2;
-                hero.setIsDead(false);
-                player.setPlayerScore(playerScore);
-                dbRepository.saveScoreBoardToDB(player);
+                hero.setIsDead(true);
                 running = false;
-
                 break;
             case 'P':
                 System.out.println(Colors.ANSI_YELLOW + "Verembe estél, egy nyilat vesztettél." + Colors.ANSI_RESET);
-                gameBoard.setCell(hero.getRow(), hero.getColumn(), gameBoard.getCellFromOriginalBoard(hero.getRow(), hero.getColumn()));
-                hero.setRow(nextStepRow);
-                hero.setColumn(nextStepCol);
-                gameBoard.setCell(nextStepRow, nextStepCol, 'H');
+                //gameBoard.setCell(hero.getRow(), hero.getColumn(), gameBoard.getCellFromOriginalBoard(hero.getRow(), hero.getColumn()));
+                //hero.setRow(nextStepRow);
+                //hero.setColumn(nextStepCol);
+                //gameBoard.setCell(nextStepRow, nextStepCol, 'H');
                 if (arrows > 0) {
                     arrows--;
                     hero.setArrows(arrows);
@@ -344,10 +345,10 @@ public class Game {
                 break;
             case '_':
                 System.out.println(Colors.ANSI_YELLOW + "Érvényes lépés!" + Colors.ANSI_RESET);
-                gameBoard.setCell(hero.getRow(), hero.getColumn(), gameBoard.getCellFromOriginalBoard(hero.getRow(), hero.getColumn()));
-                hero.setRow(nextStepRow);
-                hero.setColumn(nextStepCol);
-                gameBoard.setCell(nextStepRow, nextStepCol, 'H');
+                //gameBoard.setCell(hero.getRow(), hero.getColumn(), gameBoard.getCellFromOriginalBoard(hero.getRow(), hero.getColumn()));
+                //hero.setRow(nextStepRow);
+                //hero.setColumn(nextStepCol);
+                //gameBoard.setCell(nextStepRow, nextStepCol, 'H');
                 break;
         }
     }
@@ -370,6 +371,8 @@ public class Game {
 
     private void saveGameState() {
         DBRepositoryInterface dbRepository = new DBRepositoryImpl();
+        String nameOfMap = consoleController.askForMapName();
+        gameBoard.setMapName(nameOfMap);
         dbRepository.saveGameBoardToDB(gameBoard);
         dbRepository.saveGameBoardDetailsToDB(gameBoard);
         JSONHandler jsonHandler = new JSONHandler();

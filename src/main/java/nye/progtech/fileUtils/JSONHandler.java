@@ -37,9 +37,17 @@ public class JSONHandler {
             char[][] originalBoardCharArray = convertToCharArray(originalBoardString);
             String mapName = mapper.convertValue(rootNode.path("mapName"), String.class);
 
+            for (int i = 0; i < originalBoardCharArray.length; i++) {
+                for (int j = 0; j < originalBoardCharArray.length; j++) {
+                    if (originalBoardCharArray[i][j] == 'U' || originalBoardCharArray[i][j] == 'H' || originalBoardCharArray[i][j] == 'G') {
+                        originalBoardCharArray[i][j] = '_';
+                    }
+                }
+            }
+
             JsonNode heroNode = rootNode.path("hero");
-            char heroColumn = (char) (heroNode.path("column").asInt() + 64);
-            int heroRow = heroNode.path("row").asInt();
+            char heroColumn = (char) (heroNode.path("column").asInt() + 65);
+            int heroRow = heroNode.path("row").asInt() + 1;
             char heroDirection = heroNode.path("direction").asText().charAt(0);
 
             return new GameBoard(size, boardCharArray, originalBoardCharArray, heroColumn, heroRow, heroDirection, mapName);

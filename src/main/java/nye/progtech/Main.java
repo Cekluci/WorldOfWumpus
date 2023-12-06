@@ -54,7 +54,7 @@ public class Main {
 
         while (isRunning) {
             consoleController.displayMainMenu();
-            MenuOption selectedOption = consoleController.getSelectedOption();
+            MenuOption selectedOption = ConsoleController.getSelectedOption();
 
             if (selectedOption != null) {
                 switch (selectedOption) {
@@ -66,7 +66,7 @@ public class Main {
                     case FILEBEOLVASAS: //KÉSZ
                         System.out.println("File beolvasás lesz");
                         consoleController.displayFormatSelectorMenu();
-                        FileFormat selectedFormat = consoleController.getSelectedFileFormat();
+                        FileFormat selectedFormat = ConsoleController.getSelectedFileFormat();
                         if (selectedFormat != null) {
                             switch (selectedFormat) {
                                 case JSON:
@@ -94,7 +94,7 @@ public class Main {
                         break;
                     case BETOLTESADATBAZISBOL: //KÉSZ
                         System.out.println("Adatbázisból betöltés lesz");
-                        String choosenMap = consoleController.chooseFileFromDB();
+                        String choosenMap = ConsoleController.chooseFileFromDB();
                         BoardDetails bd = dbRepository.selectBoardDetailsByMapName(choosenMap);
                         List<Tile> tiles = dbRepository.selectTilesByMapName(choosenMap);
                         System.out.println("----------betöltött map-----------");
@@ -133,7 +133,7 @@ public class Main {
                     case KILEPES: //KÉSZ
                         isRunning = false;
                         System.out.println("Köszi, hogy játszottál, " + userName + "!");
-                        consoleController.closeScanner();
+                        ConsoleController.closeScanner();
                         System.exit(0);
                         break;
                     default:

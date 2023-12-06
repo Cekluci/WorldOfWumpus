@@ -1,15 +1,17 @@
 package nye.progtech.Game;
 
 import nye.progtech.controller.ConsoleController;
+import nye.progtech.fileUtils.JSONHandler;
 import nye.progtech.model.GameBoard;
 import nye.progtech.repository.DBRepositoryImpl;
 import nye.progtech.repository.DBRepositoryInterface;
 
 public class MapEditor {
 
-    private GameBoard gameBoard = new GameBoard();
-    private ConsoleController consoleController = new ConsoleController();
+    private final GameBoard gameBoard = new GameBoard();
+    private final ConsoleController consoleController = new ConsoleController();
     DBRepositoryInterface dbRepository = new DBRepositoryImpl();
+    JSONHandler jsonHandler = new JSONHandler();
 
     public MapEditor() {
     }
@@ -19,11 +21,11 @@ public class MapEditor {
 
         System.out.println("Üdvözöllek a pályaszerkesztőben!");
 
-        int size = consoleController.askForBoardSize();
-        int heroRow = consoleController.askForHeroRow();
-        char heroColC = consoleController.askForHeroColumn();
-        char heroDir = consoleController.askForHeroDirection();
-        String mapName = consoleController.askForMapName();
+        int size = ConsoleController.askForBoardSize();
+        int heroRow = ConsoleController.askForHeroRow();
+        char heroColC = ConsoleController.askForHeroColumn();
+        char heroDir = ConsoleController.askForHeroDirection();
+        String mapName = ConsoleController.askForMapName();
 
         char[][] newBoard = gameBoard.createEmptyBoard(size);
 
@@ -38,7 +40,7 @@ public class MapEditor {
         int wumpusCount = 0;
         int goldCount = 0;
         while (true) {
-            String input = consoleController.askForEditorInput();
+            String input = ConsoleController.askForEditorInput();
 
             if ("kilép".equalsIgnoreCase(input)) {
                 System.out.println("Kilépés a szerkesztőből.");
@@ -98,6 +100,9 @@ public class MapEditor {
         }
         dbRepository.saveGameBoardToDB(gameBoard);
         dbRepository.saveGameBoardDetailsToDB(gameBoard);
+
+        jsonHandler.saveToJSON(gameBoard, gameBoard.getMapName());
+
         System.out.println("A tábla mentve az adatbázisba.");
     }
 

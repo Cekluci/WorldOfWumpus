@@ -1,5 +1,7 @@
 package nye.progtech.model;
 
+import nye.progtech.Colors;
+
 public class Hero {
     private int column;
     private int row;
@@ -67,6 +69,32 @@ public class Hero {
 
     public void setIsDead(boolean isDead) {
         this.isDead = isDead;
+    }
+
+    public void HeroChangeDirection(char newDir) {
+        char currentDirection = this.getDirection();
+        if (currentDirection == newDir) {
+            System.out.println(Colors.ANSI_YELLOW + "Már ebben az irányban állsz." + Colors.ANSI_RESET);
+        } else {
+            this.setDirection(newDir);
+        }
+    }
+
+    public void HeroToStepForward(char direction) {
+        switch (direction) {
+            case 'E':
+                column++;
+                break;
+            case 'S':
+                row++;
+                break;
+            case 'W':
+                column--;
+                break;
+            case 'N':
+                row--;
+                break;
+        }
     }
 
     private int convertColumnToIndex(char columnLabel) {

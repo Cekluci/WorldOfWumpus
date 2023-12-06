@@ -35,7 +35,7 @@ public class FileLoader {
 
             for (int i = 0; i < size; i++){
                 for (int j = 0; j < size; j++) {
-                    if (originalBoard[i][j] == 'G' || originalBoard[i][j] == 'H') {
+                    if (originalBoard[i][j] == 'G' || originalBoard[i][j] == 'H' || originalBoard[i][j] == 'U') {
                         originalBoard[i][j] = '_';
                     }
                 }

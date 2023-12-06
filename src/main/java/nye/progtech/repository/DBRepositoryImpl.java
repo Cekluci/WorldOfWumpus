@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBRepositoryImpl implements DBRepositoryInterface {
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     public DBRepositoryImpl() {
         this.dataSource = DBInitializer.getDataSource();
@@ -157,7 +157,7 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
     @Override
     public List<ScoreBoard> getScoreBoard() {
         List<ScoreBoard> scoreboard = new ArrayList<>();
-        String sql = "SELECT playnername, playerscore FROM scoreboard ORDER BY playerscore DESC";
+        String sql = "SELECT playername, playerscore FROM scoreboard ORDER BY playerscore DESC";
 
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
