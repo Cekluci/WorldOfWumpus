@@ -8,6 +8,7 @@ import nye.progtech.model.GameBoard;
 import nye.progtech.model.Hero;
 import nye.progtech.repository.DBRepositoryInterface;
 import nye.progtech.fileUtils.FileLoader;
+import nye.progtech.fileUtils.JSONHandler;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,6 +36,15 @@ public class GameBoardService {
         } catch (IOException e) {
             System.err.println("Hiba történt a file beolvasása során: " + e.getMessage());
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    public GameBoard performJSONLoading(String directory) {
+        String choosenFile = consoleController.chooseFileFromDirectory(directory);
+        if (choosenFile != null) {
+            GameBoard gameBoard = JSONHandler.loadGameBoardFromJson(choosenFile);
+            return gameBoard;
         }
         return null;
     }

@@ -22,6 +22,8 @@ public class ConsoleController {
         }
     }
 
+
+
     public String promptForUserName() {
         System.out.println("Szia Idegen! Kérlek add meg a neved: ");
         return scanner.nextLine();
@@ -29,6 +31,22 @@ public class ConsoleController {
 
     public void greetUser(String userName) {
         System.out.println("Üdvözöllek, " + userName + "! Kezdjünk is neki a játéknak.");
+    }
+
+    //Game
+    public String askForGameAction() {
+        System.out.println("Az alábbi parancsok közül választhatsz, de mindig vedd figyelembe, ");
+        System.out.println("hogy az irányok az éppen aktuális irány alapján kerülnek végrehajtásra!");
+        System.out.println("forward: Lépés előre.");
+        System.out.println("backward: Lépés hátra.");
+        System.out.println("left: Lépés balra.");
+        System.out.println("right: Lépés jobbra.");
+        System.out.println("direction east|west|north|south: Hős irányának beállítása.");
+        System.out.println("fire: Nyíl kilővése az aktuális irányba.");
+        System.out.println("save: Játékállás elmentése.");
+        System.out.println("exit: Kilépés a játékból.");
+        System.out.println("Adj meg egy parancsot: ");
+        return scanner.nextLine();
     }
 
     //Editor
@@ -70,10 +88,21 @@ public class ConsoleController {
             System.out.println(option.getValue() + ". " + option.getDescription());
         }
     }
+    public void displayFormatSelectorMenu() {
+        System.out.println("--- Formátumok ---");
+        for (FileFormat format : FileFormat.values()) {
+            System.out.println(format.getValue() + ". " + format.getDescription());
+        }
+    }
 
     public MenuOption getSelectedOption() {
         int selectedOptionIndex = scanner.nextInt();
         return MenuOption.fromInt(selectedOptionIndex);
+    }
+
+    public FileFormat getSelectedFileFormat() {
+        int selectedOptionIndex = scanner.nextInt();
+        return FileFormat.fromInt(selectedOptionIndex);
     }
 
     public String chooseFileFromDirectory(String directoryPath) {

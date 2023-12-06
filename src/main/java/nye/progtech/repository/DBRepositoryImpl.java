@@ -5,6 +5,7 @@ import nye.progtech.DAO.Tile;
 import nye.progtech.db.DBInitializer;
 import nye.progtech.model.GameBoard;
 import nye.progtech.model.Hero;
+import nye.progtech.model.Player;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -136,5 +137,19 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
         Hero hero = gameBoard.getHero();
         BoardDetails boardDetails = new BoardDetails(gameBoard.getSize(), hero.getRow(), hero.getColumn(), hero.getDirection(), gameBoard.getMapName());
         insertBoardDetails(boardDetails);
+    }
+
+    @Override
+    public void saveScoreBoardToDB(Player player) {
+        String sql = "INSERT INTO scoreboard (playername, playerscore) VALUES (?, ?)";
+        try (
+            Connection conn = dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, String.valueOf(player.getPlayerName()));
+                ps.setInt(2, player.getPlayerScore());
+                ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

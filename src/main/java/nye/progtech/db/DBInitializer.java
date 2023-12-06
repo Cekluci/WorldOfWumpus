@@ -48,7 +48,7 @@ public class DBInitializer {
                                 "rowIndex INT NOT NULL," +
                                 "columnIndex INT NOT NULL," +
                                 "content CHAR(1)," +
-                                "mapName varchar(30)," +
+                                "mapName VARCHAR(30)," +
                                 "UNIQUE(rowIndex, columnIndex, mapName));";
 
         String createBoardDetailsTableSQL = "CREATE TABLE IF NOT EXISTS boardDetails (" +
@@ -57,12 +57,17 @@ public class DBInitializer {
                                             "HeroRowIndex CHAR(1) NOT NULL," +
                                             "HeroColIndex INT NOT NULL," +
                                             "HeroDirection CHAR(1) NOT NULL," +
-                                            "mapName varchar(30) NOT NULL)";
+                                            "mapName VARCHAR(30) NOT NULL)";
+
+        String createScoreBoardTableSQL = "CREATE TABLE IF NOT EXISTS scoreBoard (" +
+                                          "playerName VARCHAR(30) NOT NULL," +
+                                          "playerScore INT NOT NULL)";
 
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement()) {
                 stmt.execute(createBoardTableSQL);
                 stmt.execute(createBoardDetailsTableSQL);
+                stmt.execute(createScoreBoardTableSQL);
         } catch (SQLException e) {
             e.printStackTrace();
         }

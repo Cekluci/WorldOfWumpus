@@ -25,10 +25,10 @@ public class JSONHandler {
         }
     }
 
-    public static GameBoard loadGameBoardFromJson(String filePath) {
+    public static GameBoard loadGameBoardFromJson(String fileName) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            JsonNode rootNode = mapper.readTree(new File(filePath));
+            JsonNode rootNode = mapper.readTree(new File("Json" + File.separator + fileName));
 
             int size = rootNode.path("size").asInt();
             String[] boardString = mapper.convertValue(rootNode.path("board"), String[].class);

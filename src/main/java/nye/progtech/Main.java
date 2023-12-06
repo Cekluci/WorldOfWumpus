@@ -5,9 +5,11 @@ import nye.progtech.DAO.Tile;
 import nye.progtech.Game.Game;
 import nye.progtech.Game.MapEditor;
 import nye.progtech.controller.ConsoleController;
+import nye.progtech.controller.FileFormat;
 import nye.progtech.controller.MenuOption;
 import nye.progtech.db.DBInitializer;
 import nye.progtech.fileUtils.JSONHandler;
+import nye.progtech.model.Player;
 import nye.progtech.repository.DBRepositoryInterface;
 import nye.progtech.model.GameBoard;
 import nye.progtech.model.Hero;
@@ -28,10 +30,13 @@ public class Main {
     private static Hero hero;
     private static GameBoard gameBoard;
 
+    private static Player player;
+
     public static void main(String[] args) throws SQLException {
 
         ConsoleController consoleController = new ConsoleController();
         GameBoardService gameBoardService = new GameBoardService(dbRepository);
+        Player player = new Player();
 
 
         //DB inicializálás és előzetes feltöltés
@@ -41,6 +46,9 @@ public class Main {
 
         String userName = consoleController.promptForUserName();
         consoleController.greetUser(userName);
+
+        player.setPlayerName(userName);
+        player.setPlayerScore(0);
 
         boolean isRunning = true;
 
@@ -57,22 +65,31 @@ public class Main {
                         break;
                     case FILEBEOLVASAS: //KÉSZ
                         System.out.println("File beolvasás lesz");
-                        gameBoard = gameBoardService.performFileLoading("worlds");
-                        hero = gameBoard.getHero();
-                        if (gameBoard != null) {
-                            gameBoard.displayBoard();
-                        } else {
-                            System.out.println("A file betöltése sikertelen.");
-                        }
-
-                        JSONHandler jsonHandler = new JSONHandler();
-                        jsonHandler.saveToJSON(gameBoard, "teszt");
-                        jsonHandler.saveToXML(gameBoard, "teszt");
-
-                        GameBoard newGameBoard = jsonHandler.loadGameBoardFromJson("Json/teszt.json");
-                        if (newGameBoard != null) {
-                            System.out.println("------------------json-ból---------");
-                            newGameBoard.displayBoard();
+                        consoleController.displayFormatSelectorMenu();
+                        FileFormat selectedFormat = consoleController.getSelectedFileFormat();
+                        if (selectedFormat != null) {
+                            switch (selectedFormat) {
+                                case JSON:
+                                    gameBoard = gameBoardService.performJSONLoading("Json");
+                                    hero = gameBoard.getHero();
+                                    if (gameBoard != null) {
+                                        gameBoard.displayBoard();
+                                    } else {
+                                        System.out.println("A file betöltése sikertelen.");
+                                    }
+                                    break;
+                                case XML:
+                                    break;
+                                case TXT:
+                                    gameBoard = gameBoardService.performFileLoading("worlds");
+                                    hero = gameBoard.getHero();
+                                    if (gameBoard != null) {
+                                        gameBoard.displayBoard();
+                                    } else {
+                                        System.out.println("A file betöltése sikertelen.");
+                                    }
+                                    break;
+                            }
                         }
                         break;
                     case BETOLTESADATBAZISBOL: //KÉSZ
@@ -101,17 +118,17 @@ public class Main {
                         break;
                     case JATEK:
                         System.out.println("Játszás lesz");
-                        Game game = new Game(hero, gameBoard);
+                        Game game = new Game(hero, gameBoard, player);
                         game.start();
                         break;
                     case KILEPES: //KÉSZ
                         isRunning = false;
+                        System.out.println("Köszi, hogy játszottál, " + userName + "!");
                         System.exit(0);
                         break;
                     default:
                         System.out.println("Rossz választás, próbáld újra, kedves " + userName);
                 }
-                System.out.println("Köszi, hogy játszottál, " + userName + "!");
             }
         }
     }

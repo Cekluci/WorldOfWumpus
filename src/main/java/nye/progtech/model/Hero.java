@@ -5,12 +5,16 @@ public class Hero {
     private int row;
     private char direction;
     private int arrows;
+    private boolean hasGold;
+    private boolean isDead;
 
     public Hero(char column, int row, char direction, int arrows) {
         this.column = convertColumnToIndex(column);
         this.row = row - 1;
         this.direction = direction;
         this.arrows = arrows;
+        this.hasGold = false;
+        this.isDead = false;
     }
 
     public Hero() {
@@ -47,6 +51,22 @@ public class Hero {
 
     public void setArrows(int arrows) {
         this.arrows = arrows;
+    }
+
+    public boolean getHasGold() {
+        return hasGold;
+    }
+
+    public void setHasGold(boolean hasGold) {
+        this.hasGold = hasGold;
+    }
+
+    public boolean getIsDead() {
+        return isDead;
+    }
+
+    public void setIsDead(boolean isDead) {
+        this.isDead = isDead;
     }
 
     private int convertColumnToIndex(char columnLabel) {
