@@ -80,21 +80,9 @@ public class Hero {
         }
     }
 
-    public void HeroToStepForward(char direction) {
-        switch (direction) {
-            case 'E':
-                column++;
-                break;
-            case 'S':
-                row++;
-                break;
-            case 'W':
-                column--;
-                break;
-            case 'N':
-                row--;
-                break;
-        }
+    public void HeroToMove(int row, int col) {
+        setRow(row);
+        setColumn(col);
     }
 
     private int convertColumnToIndex(char columnLabel) {

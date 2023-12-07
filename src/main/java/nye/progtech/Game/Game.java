@@ -103,22 +103,22 @@ public class Game {
             gameBoard.displayBoard();
         }
     }
+//    public void HeroTakeStepForward(char direction) {
+//        int currentRow = hero.getRow();
+//        int currentCol = hero.getColumn();
+//
+//        hero.HeroToStepForward(direction);
+//
+//        int nextStepRow = hero.getRow();
+//        int nextStepCol = hero.getColumn();
+//        char nextCell = gameBoard.getCell(nextStepRow, nextStepCol);
+//
+//        updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
+//        gameBoard.setCell(currentRow, currentCol, gameBoard.getCellFromOriginalBoard(currentRow, currentCol));
+//        gameBoard.setCell(nextStepRow, nextStepCol, 'H');
+//    }
+
     public void HeroTakeStepForward(char direction) {
-        int currentRow = hero.getRow();
-        int currentCol = hero.getColumn();
-
-        hero.HeroToStepForward(direction);
-
-        int nextStepRow = hero.getRow();
-        int nextStepCol = hero.getColumn();
-        char nextCell = gameBoard.getCell(nextStepRow, nextStepCol);
-
-        updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
-        gameBoard.setCell(currentRow, currentCol, gameBoard.getCellFromOriginalBoard(currentRow, currentCol));
-        gameBoard.setCell(nextStepRow, nextStepCol, 'H');
-    }
-
-    public void HeroTakeStepForward_old(char direction) {
         int nextStepRow = 0;
         int nextStepCol = 0;
 
@@ -143,7 +143,7 @@ public class Game {
 
         char nextCell = gameBoard.getCell(nextStepRow, nextStepCol);
 
-        //updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
+        updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
 
 
     }
@@ -173,7 +173,7 @@ public class Game {
 
         char nextCell = gameBoard.getCell(nextStepRow, nextStepCol);
 
-        //updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
+        updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
 
     }
 
@@ -202,7 +202,7 @@ public class Game {
 
         char nextCell = gameBoard.getCell(nextStepRow, nextStepCol);
 
-        //updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
+        updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
 
     }
     public void HeroTakeStepRight(char direction) {
@@ -230,7 +230,7 @@ public class Game {
 
         char nextCell = gameBoard.getCell(nextStepRow, nextStepCol);
 
-        //updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol,);
+        updateBoardAfterSteps(nextCell, nextStepRow, nextStepCol);
 
     }
 
@@ -322,10 +322,11 @@ public class Game {
                 System.out.println("Vidd vissza a kiindulási helyre!" + Colors.ANSI_RESET);
                 hero.setHasGold(true);
                 playerScore+= 5;
-                //gameBoard.setCell(hero.getRow(), hero.getColumn(), gameBoard.getCellFromOriginalBoard(hero.getRow(), hero.getColumn()));
+                gameBoard.setCell(hero.getRow(), hero.getColumn(), gameBoard.getCellFromOriginalBoard(hero.getRow(), hero.getColumn()));
                 //hero.setRow(nextStepRow);
                 //hero.setColumn(nextStepCol);
-                //gameBoard.setCell(nextStepRow, nextStepCol, 'H');
+                hero.HeroToMove(nextStepRow, nextStepCol);
+                gameBoard.setCell(nextStepRow, nextStepCol, 'H');
                 break;
             case 'U':
                 System.out.println(Colors.ANSI_RED + "A Wumpus megtalált, így sajnos meghaltál." + Colors.ANSI_RESET);
@@ -334,10 +335,11 @@ public class Game {
                 break;
             case 'P':
                 System.out.println(Colors.ANSI_YELLOW + "Verembe estél, egy nyilat vesztettél." + Colors.ANSI_RESET);
-                //gameBoard.setCell(hero.getRow(), hero.getColumn(), gameBoard.getCellFromOriginalBoard(hero.getRow(), hero.getColumn()));
+                gameBoard.setCell(hero.getRow(), hero.getColumn(), gameBoard.getCellFromOriginalBoard(hero.getRow(), hero.getColumn()));
                 //hero.setRow(nextStepRow);
                 //hero.setColumn(nextStepCol);
-                //gameBoard.setCell(nextStepRow, nextStepCol, 'H');
+                hero.HeroToMove(nextStepRow, nextStepCol);
+                gameBoard.setCell(nextStepRow, nextStepCol, 'H');
                 if (arrows > 0) {
                     arrows--;
                     hero.setArrows(arrows);
@@ -345,10 +347,11 @@ public class Game {
                 break;
             case '_':
                 System.out.println(Colors.ANSI_YELLOW + "Érvényes lépés!" + Colors.ANSI_RESET);
-                //gameBoard.setCell(hero.getRow(), hero.getColumn(), gameBoard.getCellFromOriginalBoard(hero.getRow(), hero.getColumn()));
+                gameBoard.setCell(hero.getRow(), hero.getColumn(), gameBoard.getCellFromOriginalBoard(hero.getRow(), hero.getColumn()));
                 //hero.setRow(nextStepRow);
                 //hero.setColumn(nextStepCol);
-                //gameBoard.setCell(nextStepRow, nextStepCol, 'H');
+                hero.HeroToMove(nextStepRow, nextStepCol);
+                gameBoard.setCell(nextStepRow, nextStepCol, 'H');
                 break;
         }
     }
