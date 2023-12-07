@@ -8,7 +8,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import nye.progtech.Colors;
-import nye.progtech.fileUtils.FileLoader;
+import nye.progtech.fileutils.FileLoader;
 import nye.progtech.repository.DBRepositoryImpl;
 import nye.progtech.repository.DBRepositoryInterface;
 
@@ -37,6 +37,7 @@ public class ConsoleController {
 
     /**
      * Bekéri a felhasználó nevét.
+     *
      * @return scanner.nextLine()
      */
     public final String promptForUserName() {
@@ -48,6 +49,7 @@ public class ConsoleController {
 
     /**
      * Felhasználó üdvözlése.
+     *
      * @param userName felhasználó neve
      */
     public final void greetUser(final String userName) {
@@ -60,6 +62,7 @@ public class ConsoleController {
 
     /**
      * Game: Játékos interakciók bekérése.
+     *
      * @return scanner.nextLine()
      */
     public String askForGameAction() {
@@ -84,6 +87,7 @@ public class ConsoleController {
     //Editor
     /**
      * Pálya méretének bekérése.
+     *
      * @return scanner.nextInt()
      */
     public static int askForBoardSize() {
@@ -93,6 +97,7 @@ public class ConsoleController {
 
     /**
      * Hős sorának bekérése.
+     *
      * @return scanner.nextInt()
      */
     public static int askForHeroRow() {
@@ -102,6 +107,7 @@ public class ConsoleController {
 
     /**
      * Hős oszlopának bekérése.
+     *
      * @return scanner.next().charAt(0)
      */
     public static char askForHeroColumn() {
@@ -111,13 +117,14 @@ public class ConsoleController {
 
     /**
      * Hős irányának bekérése.
+     *
      * @return scanner.next().charAt(0)
      */
     public static char askForHeroDirection() {
         String input;
         do {
             System.out.println("Add meg a hős irányát (N, E, S, W): ");
-            input = scanner.nextLine().toUpperCase();
+            input = scanner.next().toUpperCase();
             if (!input.equals("N")
                     && !input.equals("E")
                     && !input.equals("S")
@@ -135,6 +142,7 @@ public class ConsoleController {
 
     /**
      * Pálya nevének bekérése.
+     *
      * @return scanner.nextLine()
      */
     public static String askForMapName() {
@@ -145,6 +153,7 @@ public class ConsoleController {
 
     /**
      * Map Editor interakciók bekérése.
+     *
      * @return scanner.nextLine()
      */
     public static String askForEditorInput() {
@@ -188,6 +197,7 @@ public class ConsoleController {
 
     /**
      * A kiválasztott opció.
+     *
      * @return a kiválasztott menu opció int-je
      */
     public static MenuOption getSelectedOption() {
@@ -202,6 +212,7 @@ public class ConsoleController {
 
     /**
      * A kiválasztott file formátum.
+     *
      * @return A kiválasztott file formátum int-je.
      */
     public static FileFormat getSelectedFileFormat() {
@@ -211,7 +222,9 @@ public class ConsoleController {
 
     /**
      * File mappából kiválasztása.
+     *
      * @param directoryPath könyvtár neve
+     *
      * @return file-ok neve
      */
     public static String chooseFileFromDirectory(final String directoryPath) {
@@ -245,6 +258,7 @@ public class ConsoleController {
 
     /**
      * Adatbázisból kiválasztás.
+     *
      * @return pályák neve.
      */
     public static String chooseFileFromDB() {

@@ -33,23 +33,25 @@ public class Hero {
 
     /**
      * Hős konstruktora.
-     * @param hColumn hős oszlopa
-     * @param hRow hős sora
-     * @param hDirection hős iránya
-     * @param hArrows hős nyilainak száma
+     *
+     * @param heroColumn hős oszlopa
+     * @param heroRow hős sora
+     * @param heroDirection hős iránya
+     * @param heroArrows hős nyilainak száma
      */
-    public Hero(final char hColumn, final int hRow,
-                final char hDirection, final int hArrows) {
-        this.column = convertColumnToIndex(hColumn);
-        this.row = hRow - 1;
-        this.direction = hDirection;
-        this.arrows = hArrows;
+    public Hero(final char heroColumn, final int heroRow,
+                final char heroDirection, final int heroArrows) {
+        this.column = convertColumnToIndex(heroColumn);
+        this.row = heroRow - 1;
+        this.direction = heroDirection;
+        this.arrows = heroArrows;
         this.hasGold = false;
         this.isDead = false;
     }
 
     /**
      * Getter a hős oszlopához.
+     *
      * @return hős oszlopa
      */
     public int getColumn() {
@@ -58,6 +60,7 @@ public class Hero {
 
     /**
      * Setter a hős oszlopához.
+     *
      * @param setColumn hős oszlopa
      */
     public void setColumn(final int setColumn) {
@@ -66,6 +69,7 @@ public class Hero {
 
     /**
      * Getter a hős sorára.
+     *
      * @return hős sora.
      */
     public int getRow() {
@@ -74,6 +78,7 @@ public class Hero {
 
     /**
      * Setter a hős sorára.
+     *
      * @param setRow hős sora
      */
     public void setRow(final int setRow) {
@@ -82,6 +87,7 @@ public class Hero {
 
     /**
      * Hős iránya.
+     *
      * @return hős iránya
      */
     public char getDirection() {
@@ -90,6 +96,7 @@ public class Hero {
 
     /**
      * Setter a hős irányára.
+     *
      * @param setDirection hős iránya
      */
     public void setDirection(final char setDirection) {
@@ -98,6 +105,7 @@ public class Hero {
 
     /**
      * Getter a hős nyilainak számára.
+     *
      * @return hős nyilainak száma.
      */
     public int getArrows() {
@@ -106,6 +114,7 @@ public class Hero {
 
     /**
      * Setter a hős nyilainak számához.
+     *
      * @param setArrows nyilak száma.
      */
     public void setArrows(final int setArrows) {
@@ -114,6 +123,7 @@ public class Hero {
 
     /**
      * Van-e a hősnél arany?
+     *
      * @return van vagy nincs, true vagy false
      */
     public boolean getHasGold() {
@@ -122,6 +132,7 @@ public class Hero {
 
     /**
      * Setter a van-e aranya a hősnek logikához.
+     *
      * @param setHasGold true or false
      */
     public void setHasGold(final boolean setHasGold) {
@@ -130,6 +141,7 @@ public class Hero {
 
     /**
      * Beállítjuk, hogy a hős halott-e.
+     *
      * @param setIsDead true or false.
      */
     public void setIsDead(final boolean setIsDead) {
@@ -138,6 +150,7 @@ public class Hero {
 
     /**
      * Hős irányának beállítása.
+     *
      * @param newDir új irány
      */
     public void heroChangeDirection(final char newDir) {
@@ -153,6 +166,7 @@ public class Hero {
 
     /**
      * Hős mozgatása a megadott mezőre.
+     *
      * @param htmRow új sor index
      * @param htmCol új oszlop index
      */

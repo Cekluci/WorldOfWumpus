@@ -21,6 +21,7 @@ public class Player {
 
     /**
      * Getter a játékos nevéhez.
+     *
      * @return játékos neve
      */
     public String getPlayerName() {
@@ -29,6 +30,7 @@ public class Player {
 
     /**
      * Setter a játékos pontszámához.
+     *
      * @param setPlayerName játékos neve
      */
     public void setPlayerName(final String setPlayerName) {
@@ -37,6 +39,7 @@ public class Player {
 
     /**
      * Getter a játékos pontszámához.
+     *
      * @return pontszám
      */
     public int getPlayerScore() {
@@ -45,6 +48,7 @@ public class Player {
 
     /**
      * Setter a játékos pontszámához.
+     *
      * @param setPlayerScore pontszám
      */
     public void setPlayerScore(final int setPlayerScore) {

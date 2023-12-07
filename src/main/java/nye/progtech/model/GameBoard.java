@@ -38,6 +38,7 @@ public class GameBoard {
 
     /**
      * GameBoard konstruktor.
+     *
      * @param gbSize pálya mérete
      * @param gbBoard pálya matrix
      * @param gbOriginalBoard üres pálya matrix
@@ -68,6 +69,7 @@ public class GameBoard {
 
     /**
      * Getter pálya méretéhez.
+     *
      * @return pálya mérete
      */
     public int getSize() {
@@ -76,6 +78,7 @@ public class GameBoard {
 
     /**
      * Setter pálya méretéhez.
+     *
      * @param setSize pálya mérete
      */
     public void setSize(final int setSize) {
@@ -84,6 +87,7 @@ public class GameBoard {
 
     /**
      * Getter a pálya matrixhoz.
+     *
      * @return pálya matrix
      */
     public char[][] getBoard() {
@@ -92,6 +96,7 @@ public class GameBoard {
 
     /**
      * Setter a pálya matrixhoz.
+     *
      * @param setBoard palya matrix
      */
     public void setBoard(final char[][] setBoard) {
@@ -100,6 +105,7 @@ public class GameBoard {
 
     /**
      * Getter az üres palya matrixhoz.
+     *
      * @return üres pálya matrix
      */
     public char[][] getOriginalBoard() {
@@ -108,6 +114,7 @@ public class GameBoard {
 
     /**
      * Setter az üres pálya matrixhoz.
+     *
      * @param setOriginalBoard üres pálya matrix
      */
     public void setOriginalBoard(final char[][] setOriginalBoard) {
@@ -116,6 +123,7 @@ public class GameBoard {
 
     /**
      * Getter a Hős objektumhoz.
+     *
      * @return hős
      */
     public Hero getHero() {
@@ -124,6 +132,7 @@ public class GameBoard {
 
     /**
      * Setter a Hős objektumhoz.
+     *
      * @param setHero hős
      */
     public void setHero(final Hero setHero) {
@@ -132,6 +141,7 @@ public class GameBoard {
 
     /**
      * Getter a pálya nevéhez.
+     *
      * @return pálya neve
      */
     public String getMapName() {
@@ -140,6 +150,7 @@ public class GameBoard {
 
     /**
      * Setter a pálya nevéhez.
+     *
      * @param setMapName pálya neve
      */
     public void setMapName(final String setMapName) {
@@ -155,6 +166,7 @@ public class GameBoard {
 
     /**
      * Nyilak számának meghatározása.
+     *
      * @return nyilak száma
      */
     private int calculateArrows() {
@@ -171,6 +183,7 @@ public class GameBoard {
 
     /**
      * Egy adott mező tartalmának kigyűjtése.
+     *
      * @param row sor
      * @param col oszlop
      * @return mező tartalma
@@ -190,6 +203,7 @@ public class GameBoard {
     /**
      * Egy adott mező tartalmának kinyerése
      * az üres pálya matrixból.
+     *
      * @param row sor
      * @param col oszlop
      * @return üres pályamező tartalma
@@ -211,6 +225,7 @@ public class GameBoard {
 
     /**
      * Pálya mező tartalmának megadása.
+     *
      * @param row sor
      * @param col oszlop
      * @param cellItem mező tartalma
@@ -280,6 +295,7 @@ public class GameBoard {
 
     /**
      * Kezdeti, üres pálya létrehozása.
+     *
      * @param cebSize méret
      * @return pálya matrix
      */

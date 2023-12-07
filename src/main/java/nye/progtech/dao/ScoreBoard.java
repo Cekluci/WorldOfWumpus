@@ -1,7 +1,7 @@
 /**
  * Data Access Object a scoreboard objektumhoz.
  */
-package nye.progtech.DAO;
+package nye.progtech.dao;
 
 public class ScoreBoard {
     /**
@@ -15,6 +15,7 @@ public class ScoreBoard {
 
     /**
      * Scoreboard konstruktora.
+     *
      * @param sbPlayerName játékos neve
      * @param sbPlayerScore játékos pontszáma
      */
@@ -25,6 +26,7 @@ public class ScoreBoard {
 
     /**
      * Getter a játékos nevéhez.
+     *
      * @return játékos neve
      */
     public String getPlayerName() {
@@ -33,6 +35,7 @@ public class ScoreBoard {
 
     /**
      * Getter a játékos pontszámához.
+     *
      * @return pontszám
      */
     public int getPlayerScore() {

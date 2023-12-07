@@ -1,10 +1,10 @@
 /**
  * Pályaszerkesztés modul.
  */
-package nye.progtech.Game;
+package nye.progtech.game;
 
 import nye.progtech.controller.ConsoleController;
-import nye.progtech.fileUtils.JSONHandler;
+import nye.progtech.fileutils.JSONHandler;
 import nye.progtech.model.GameBoard;
 import nye.progtech.repository.DBRepositoryImpl;
 import nye.progtech.repository.DBRepositoryInterface;
@@ -90,9 +90,10 @@ public class MapEditor {
 
     /**
      * Pálya szerkesztése.
-     * @param eGameBoard gameboard
+     *
+     * @param editGameBoard gameboard
      */
-    public void editGameBoard(final GameBoard eGameBoard) {
+    public void editGameBoard(final GameBoard editGameBoard) {
         int wumpusCount = 0;
         int goldCount = 0;
         while (true) {
@@ -120,22 +121,22 @@ public class MapEditor {
                 case "add" -> {
                     if (row - 1 == 0 || colInt - 1 == 0) {
                         System.out.println("Nem rakhatsz ide semmit, ez itt fal.");
-                    } else if (row - 1 > eGameBoard.getSize() || colInt - 1 > eGameBoard.getSize()) {
+                    } else if (row - 1 > editGameBoard.getSize() || colInt - 1 > editGameBoard.getSize()) {
                         System.out.println("A pálya határain kívül vagy.");
-                    } else if (eGameBoard.getCell(row - 1, colInt - 1) != '_') {
+                    } else if (editGameBoard.getCell(row - 1, colInt - 1) != '_') {
                         System.out.println("Ez a mező már foglalt!");
                     } else {
-                        if (eGameBoard.getSize() <= BOARD_SM && wumpusCount > 1) {
+                        if (editGameBoard.getSize() <= BOARD_SM && wumpusCount > 1) {
                             System.out.println("Nem lehet 1-nél több Wumpus a pályán!");
-                        } else if (eGameBoard.getSize() >= BOARD_MID_L && eGameBoard.getSize() <= BOARD_MID_H && wumpusCount > 2) {
+                        } else if (editGameBoard.getSize() >= BOARD_MID_L && editGameBoard.getSize() <= BOARD_MID_H && wumpusCount > 2) {
                             System.out.println("Nem lehet 2-nél több Wumpus a pályán!");
-                        } else if (eGameBoard.getSize() > BOARD_MID_H && wumpusCount > MAX_WUMPUS) {
+                        } else if (editGameBoard.getSize() > BOARD_MID_H && wumpusCount > MAX_WUMPUS) {
                             System.out.println("Nem lehet 3-nál több Wumpus a pályán!");
                         } else {
                             if (goldCount > 1) {
                                 System.out.println("Nem lehet 1-nél több arany a pályán!");
                             } else {
-                                eGameBoard.setCell(row - 1, colInt - 1, content);
+                                editGameBoard.setCell(row - 1, colInt - 1, content);
                             }
                         }
                     }
@@ -143,23 +144,23 @@ public class MapEditor {
                 case "delete" -> {
                     if (row - 1 == 0 || colInt - 1 == 0) {
                         System.out.println("Nem törölhetsz falat!");
-                    } else if (eGameBoard.getCell(row - 1, colInt - 1) == '_') {
+                    } else if (editGameBoard.getCell(row - 1, colInt - 1) == '_') {
                         System.out.println("Ez a mező már üres!");
-                    } else if (eGameBoard.getCell(row - 1, colInt - 1) == 'H') {
+                    } else if (editGameBoard.getCell(row - 1, colInt - 1) == 'H') {
                         System.out.println("A Hőst nem törölheted a pályáról!");
                     } else {
-                        eGameBoard.setCell(row - 1, colInt - 1, '_');
+                        editGameBoard.setCell(row - 1, colInt - 1, '_');
                     }
                 }
                 default -> System.out.println("Nem megfelelő parancs.");
             }
-            eGameBoard.displayBoard();
+            editGameBoard.displayBoard();
 
         }
-        dbRepository.saveGameBoardToDB(eGameBoard);
-        dbRepository.saveGameBoardDetailsToDB(eGameBoard);
+        dbRepository.saveGameBoardToDB(editGameBoard);
+        dbRepository.saveGameBoardDetailsToDB(editGameBoard);
 
-        jsonHandler.saveToJSON(eGameBoard, eGameBoard.getMapName());
+        jsonHandler.saveToJSON(editGameBoard, editGameBoard.getMapName());
 
         System.out.println("A tábla mentve az adatbázisba.");
     }

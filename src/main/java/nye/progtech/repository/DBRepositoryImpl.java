@@ -1,8 +1,8 @@
 package nye.progtech.repository;
 
-import nye.progtech.DAO.BoardDetails;
-import nye.progtech.DAO.ScoreBoard;
-import nye.progtech.DAO.Tile;
+import nye.progtech.dao.BoardDetails;
+import nye.progtech.dao.ScoreBoard;
+import nye.progtech.dao.Tile;
 import nye.progtech.db.DBInitializer;
 import nye.progtech.model.GameBoard;
 import nye.progtech.model.Hero;
@@ -67,6 +67,7 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
     /**
      * Tile DAO-ba menti a pályát elemenként, amit
      * beolvasott SQL-ből.
+     *
      * @param mapName pálya neve
      * @return list of Tiles
      */
@@ -93,7 +94,6 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
         return tiles;
     }
 
-    //Mentsük el a map-ot az adatbázisba
     private void insertTile(final Tile tile) {
         String sql = "INSERT INTO tiles"
                     + "(rowindex, columnindex, content, mapname)"
@@ -136,6 +136,7 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
 
     /**
      * Olvassuk be a boarddetails-t az adatbázisból.
+     *
      * @param mapName pálya neve
      * @return boarddetails objektum
      */
@@ -164,6 +165,7 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
 
     /**
      * Kérjük le az összes pályanevet az adatbázisból.
+     *
      * @return lista a pályanevekkel.
      */
     @Override
@@ -184,6 +186,7 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
 
     /**
      * Mentsük el a pályát az adatbázisba.
+     *
      * @param gameBoard gameboard objektum
      */
     @Override
@@ -199,6 +202,7 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
 
     /**
      * GameBoard details feltöltése az adatbázisba.
+     *
      * @param gameBoard gameboard objektum
      */
     @Override
@@ -212,6 +216,7 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
 
     /**
      * Scoreboard elmentése az adatbázisba.
+     *
      * @param player játékos objektum.
      */
     @Override
@@ -231,6 +236,7 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
 
     /**
      * Scoreboard lehívása az adatbázisból.
+     *
      * @return lista a pontszámokkal és a játékosokkal
      */
     @Override

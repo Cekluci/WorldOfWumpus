@@ -34,6 +34,7 @@ public enum FileFormat {
 
     /**
      * Kiválasztott formátum value.
+     *
      * @return value
      */
     public int getValue() {
@@ -42,6 +43,7 @@ public enum FileFormat {
 
     /**
      * Kiválasztott formátum description.
+     *
      * @return description
      */
     public String getDescription() {
@@ -50,7 +52,9 @@ public enum FileFormat {
 
     /**
      * File formátum kiválasztás int-re alakítás.
+     *
      * @param value kiválasztott value.
+     *
      * @return FileFormat objektum.
      */
     public static FileFormat fromInt(final int value) {

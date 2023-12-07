@@ -24,6 +24,7 @@ public final class DBInitializer {
 
     /**
      * Program indításakor az adatbázis feltöltése adatokkal.
+     *
      * @throws SQLException sql hiba
      */
     public static void dbSetup() throws SQLException {
@@ -35,6 +36,7 @@ public final class DBInitializer {
 
     /**
      * Data Source objektum létrehozása.
+     *
      * @return data source
      */
     public static DataSource getDataSource() {
@@ -59,6 +61,7 @@ public final class DBInitializer {
 
     /**
      * Inicializálás, táblák létrehozása.
+     *
      * @throws SQLException sql hiba
      */
     public static void initializeDB() throws SQLException {

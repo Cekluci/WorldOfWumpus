@@ -4,13 +4,13 @@
 package nye.progtech.services;
 
 import nye.progtech.Colors;
-import nye.progtech.DAO.BoardDetails;
-import nye.progtech.DAO.Tile;
+import nye.progtech.dao.BoardDetails;
+import nye.progtech.dao.Tile;
 import nye.progtech.controller.ConsoleController;
 import nye.progtech.model.GameBoard;
 import nye.progtech.repository.DBRepositoryInterface;
-import nye.progtech.fileUtils.FileLoader;
-import nye.progtech.fileUtils.JSONHandler;
+import nye.progtech.fileutils.FileLoader;
+import nye.progtech.fileutils.JSONHandler;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +27,7 @@ public class GameBoardService {
     private static final int ASCII_ADDITION = 65;
     /**
      * GameBoard service konstruktor.
+     *
      * @param gbsDbRepository dbRepository
      */
     public GameBoardService(final DBRepositoryInterface gbsDbRepository) {
@@ -35,6 +36,7 @@ public class GameBoardService {
 
     /**
      * File betöltés.
+     *
      * @param directory választott könyvtár
      * @return GameBoard objektum
      */
@@ -58,6 +60,7 @@ public class GameBoardService {
 
     /**
      * JSON file-ból betöltés.
+     *
      * @param directory kiválasztott könyvtár
      * @return gameboard objektum
      */
@@ -74,6 +77,7 @@ public class GameBoardService {
 
     /**
      * Adatbázisból betöltés.
+     *
      * @param tiles Tiles objektum
      * @param bd boardDetails objektum
      * @return gameboard objektum

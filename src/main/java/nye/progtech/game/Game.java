@@ -1,11 +1,11 @@
 /**
  * Játék vezérlése.
  */
-package nye.progtech.Game;
+package nye.progtech.game;
 
 import nye.progtech.Colors;
 import nye.progtech.controller.ConsoleController;
-import nye.progtech.fileUtils.JSONHandler;
+import nye.progtech.fileutils.JSONHandler;
 import nye.progtech.model.GameBoard;
 import nye.progtech.model.Hero;
 import nye.progtech.model.Player;
@@ -42,11 +42,11 @@ public class Game {
     /**
      * Bázis sor, ahova vissza kell térni az arannyal.
      */
-    private final int baseRow;
+    private int baseRow;
     /**
      * Bázis oszlop, ahova vissza kell térni az arannyal.
      */
-    private final int baseCol;
+    private int baseCol;
     /**
      * Játékos pontszáma.
      */
@@ -72,18 +72,26 @@ public class Game {
 
     /**
      * Game objektum konstruktora.
-     * @param gHero hős
-     * @param gGameBoard pálya
-     * @param gPlayer játékos
+     *
+     * @param gameHero hős
+     * @param gameGameBoard pálya
+     * @param gamePlayer játékos
      */
-    public Game(final Hero gHero, final GameBoard gGameBoard, final Player gPlayer) {
-        this.hero = gHero;
-        this.gameBoard = gGameBoard;
-        this.player = gPlayer;
+    public Game(final Hero gameHero, final GameBoard gameGameBoard, final Player gamePlayer) {
+        this.hero = gameHero;
+        this.gameBoard = gameGameBoard;
+        this.player = gamePlayer;
 
-        arrows = hero.getArrows();
-        baseRow = hero.getRow();
-        baseCol = hero.getColumn();
+        if (this.hero == null) {
+            System.out.println(Colors.ANSI_RED
+                    + "Nincs betöltve pálya!"
+                    + Colors.ANSI_RESET);
+            return;
+        } else {
+            arrows = hero.getArrows();
+            baseRow = hero.getRow();
+            baseCol = hero.getColumn();
+        }
 
         playerScore = player.getPlayerScore();
 
@@ -95,7 +103,12 @@ public class Game {
      */
     public void start() {
         running = true;
+        if (gameBoard == null) {
+            running = false;
+            return;
+        }
         gameBoard.displayBoard();
+
         while (running) {
             iranymutatas(hero.getDirection());
             String command = consoleController.askForGameAction();
@@ -142,12 +155,15 @@ public class Game {
                 case "exit" -> running = false;
                 default -> System.out.println("Nem megfelelő parancs, próbáld újra.");
             }
-            gameBoard.displayBoard();
+            if (gameBoard != null) {
+                gameBoard.displayBoard();
+            }
         }
     }
 
     /**
      * Hős előre lépésének logikája, és ellenőrzése.
+     *
      * @param direction irány
      */
     public void heroTakeStepForward(final char direction) {
@@ -182,6 +198,7 @@ public class Game {
     }
     /**
      * Hős hátra lépésének logikája, és ellenőrzése.
+     *
      * @param direction irány
      */
     public void heroTakeStepBackward(final char direction) {
@@ -215,6 +232,7 @@ public class Game {
     }
     /**
      * Hős balra lépésének logikája, és ellenőrzése.
+     *
      * @param direction irány
      */
     public void heroTakeStepLeft(final char direction) {
@@ -248,6 +266,7 @@ public class Game {
     }
     /**
      * Hős jobbra lépésének logikája, és ellenőrzése.
+     *
      * @param direction irány
      */
     public void heroTakeStepRight(final char direction) {
@@ -301,6 +320,7 @@ public class Game {
 
     /**
      * Megnézi, hogy a wumpus irányba van-e, amikor tüzelünk a nyíllal.
+     *
      * @return boolean true vagy false.
      */
     public boolean isWumpusInLineOfFire() {
@@ -431,10 +451,10 @@ public class Game {
 
     /**
      * Kirajzolja az irányokat (Merre van észak, dél, kelet, nyugat).
+     *
      * @param direction irány
      */
     public void iranymutatas(final char direction) {
-        String defaultColor = Colors.ANSI_RESET;
         String north = "";
         String east = "";
         String west = "";
@@ -468,6 +488,7 @@ public class Game {
             default -> System.out.println("Nem megfelelő irány.");
         }
 
+        String defaultColor = Colors.ANSI_RESET;
         System.out.println("    " + north + "N    ");
         System.out.println("    " + north + "↑    ");
         System.out.println(west + "W ← " + defaultColor + "+" + east + " → E");

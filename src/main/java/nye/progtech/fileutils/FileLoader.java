@@ -1,7 +1,7 @@
 /**
  * File-ok betöltése a programba.
  */
-package nye.progtech.fileUtils;
+package nye.progtech.fileutils;
 
 import nye.progtech.model.GameBoard;
 
@@ -28,6 +28,7 @@ public final class FileLoader {
 
     /**
      * GameBoard objektum feltöltése TXT file-ból.
+     *
      * @param fileName file neve
      * @return GameBoard objektum
      * @throws IOException Input Output exception
@@ -67,6 +68,7 @@ public final class FileLoader {
 
     /**
      * File-ok listázása a megadott könyvtárban.
+     *
      * @param directoryPath elérési útvonal
      * @return file lista.
      */

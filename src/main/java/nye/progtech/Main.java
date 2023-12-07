@@ -3,11 +3,11 @@
  */
 package nye.progtech;
 
-import nye.progtech.DAO.BoardDetails;
-import nye.progtech.DAO.ScoreBoard;
-import nye.progtech.DAO.Tile;
-import nye.progtech.Game.Game;
-import nye.progtech.Game.MapEditor;
+import nye.progtech.dao.BoardDetails;
+import nye.progtech.dao.ScoreBoard;
+import nye.progtech.dao.Tile;
+import nye.progtech.game.Game;
+import nye.progtech.game.MapEditor;
 import nye.progtech.controller.ConsoleController;
 import nye.progtech.controller.FileFormat;
 import nye.progtech.controller.MenuOption;
@@ -38,8 +38,9 @@ public class Main {
 
     /**
      * A program belépési pontja.
+     *
      * @param args argumentumok
-     * @throws SQLException
+     * @throws SQLException sql hiba
      */
     public static void main(final String[] args) throws SQLException {
 
@@ -51,7 +52,7 @@ public class Main {
         //DB inicializálás és előzetes feltöltés
         DBInitializer.dbSetup();
 
-        DBRepositoryInterface newDbRepository = new DBRepositoryImpl();
+        DBRepositoryInterface dbRepository = new DBRepositoryImpl();
 
         String userName = consoleController.promptForUserName();
         consoleController.greetUser(userName);
@@ -68,12 +69,10 @@ public class Main {
             if (selectedOption != null) {
                 switch (selectedOption) {
                     case PALYASZERKESZTO:
-                        System.out.println("Pályaszerkesztés lesz");
                         MapEditor mapEditor = new MapEditor();
                         mapEditor.startEditor();
                         break;
-                    case FILEBEOLVASAS: //KÉSZ
-                        System.out.println("File beolvasás lesz");
+                    case FILEBEOLVASAS:
                         consoleController.displayFormatSelectorMenu();
                         FileFormat selectedFormat =
                                 ConsoleController.getSelectedFileFormat();
@@ -106,12 +105,10 @@ public class Main {
                             }
                         }
                         break;
-                    case BETOLTESADATBAZISBOL: //KÉSZ
-                        System.out.println("Adatbázisból betöltés lesz");
+                    case BETOLTESADATBAZISBOL:
                         String choosenMap = ConsoleController.chooseFileFromDB();
                         BoardDetails bd = dbRepository.selectBoardDetailsByMapName(choosenMap);
                         List<Tile> tiles = dbRepository.selectTilesByMapName(choosenMap);
-                        System.out.println("----------betöltött map-----------");
                         gameBoard = gameBoardService.loadBoardFromDB(tiles, bd);
                         hero = gameBoard.getHero();
                         if (gameBoard != null) {
@@ -120,8 +117,7 @@ public class Main {
                             System.out.println("A tábla betöltése sikertelen.");
                         }
                         break;
-                    case METESADATBAZISBA: //KÉSZ
-                        System.out.println("Adatbázisba mentés lesz");
+                    case METESADATBAZISBA:
                         if (gameBoard != null) {
                             dbRepository.saveGameBoardToDB(gameBoard);
                             dbRepository.saveGameBoardDetailsToDB(gameBoard);
@@ -131,7 +127,6 @@ public class Main {
                         }
                         break;
                     case JATEK:
-                        System.out.println("Játszás lesz");
                         Game game = new Game(hero, gameBoard, player);
                         game.start();
                         break;
@@ -144,7 +139,7 @@ public class Main {
                             System.out.printf("%d. %s - %d pont\n", i + 1, entry.getPlayerName(), entry.getPlayerScore());
                         }
                         break;
-                    case KILEPES: //KÉSZ
+                    case KILEPES:
                         isRunning = false;
                         System.out.println(Colors.ANSI_GREEN
                                 + "Köszi, hogy játszottál, "
@@ -156,7 +151,7 @@ public class Main {
                         break;
                     default:
                         System.out.println(Colors.ANSI_RED
-                                + "Rossz választás, próbáld újra, kedves "
+                                + "Rossz választás! Próbáld újra, kedves "
                                 + userName
                                 + Colors.ANSI_RESET);
                         break;

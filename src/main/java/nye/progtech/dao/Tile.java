@@ -1,7 +1,7 @@
 /**
  * Data Access Object a pálya elemeihez (mezőhöz).
  */
-package nye.progtech.DAO;
+package nye.progtech.dao;
 
 /**
  * Data Access Object osztály a pálya elemeihez.
@@ -26,17 +26,18 @@ public class Tile {
 
     /**
      * Konstruktor a pályaelemhez.
-     * @param tRow sor
-     * @param tColumn oszlopo
-     * @param tContent tartalom
-     * @param tMapName pályanév
+     *
+     * @param tileRow sor
+     * @param tileColumn oszlop
+     * @param tileContent tartalom
+     * @param tileMapName pályanév
      */
-    public Tile(final int tRow, final int tColumn,
-                final char tContent, final String tMapName) {
-        this.row = tRow;
-        this.column = tColumn;
-        this.content = tContent;
-        this.mapName = tMapName;
+    public Tile(final int tileRow, final int tileColumn,
+                final char tileContent, final String tileMapName) {
+        this.row = tileRow;
+        this.column = tileColumn;
+        this.content = tileContent;
+        this.mapName = tileMapName;
     }
 
     /**
@@ -48,6 +49,7 @@ public class Tile {
 
     /**
      * Getter a sorhoz.
+     *
      * @return sor
      */
     public int getRow() {
@@ -56,6 +58,7 @@ public class Tile {
 
     /**
      * Setter a sorhoz.
+     *
      * @param setRow sor
      */
     public void setRow(final int setRow) {
@@ -64,6 +67,7 @@ public class Tile {
 
     /**
      * Getter az oszlophoz.
+     *
      * @return oszlop
      */
     public int getColumn() {
@@ -72,6 +76,7 @@ public class Tile {
 
     /**
      * Setter az oszlophoz.
+     *
      * @param setColumn oszlop
      */
     public void setColumn(final int setColumn) {
@@ -80,6 +85,7 @@ public class Tile {
 
     /**
      * Getter a tartalomhoz.
+     *
      * @return tartalom
      */
     public char getContent() {
@@ -88,6 +94,7 @@ public class Tile {
 
     /**
      * Setter a tartalomhoz.
+     *
      * @param setContent tartalom
      */
     public void setContent(final char setContent) {
@@ -96,6 +103,7 @@ public class Tile {
 
     /**
      * Getter a pálya nevéhez.
+     *
      * @return pálya neve
      */
     public String getMapName() {
@@ -104,6 +112,7 @@ public class Tile {
 
     /**
      * Setter a pálya nevéhez.
+     *
      * @param setMapName pálya neve
      */
     public void setMapName(final String setMapName) {

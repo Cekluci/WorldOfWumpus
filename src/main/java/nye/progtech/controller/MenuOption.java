@@ -50,6 +50,7 @@ public enum MenuOption {
 
     /**
      * Kiválasztott menü value.
+     *
      * @return value.
      */
     public int getValue() {
@@ -58,6 +59,7 @@ public enum MenuOption {
 
     /**
      * Kiválasztott menü description.
+     *
      * @return description.
      */
     public String getDescription() {
@@ -66,7 +68,9 @@ public enum MenuOption {
 
     /**
      * Kiválasztott menüelem int-re konvertálás.
+     *
      * @param value kiválasztott menü value.
+     *
      * @return MenuOption objektum.
      */
     public static MenuOption fromInt(final int value) {

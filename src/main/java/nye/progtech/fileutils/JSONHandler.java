@@ -1,7 +1,7 @@
 /**
  * JSON file-ok kezelése.
  */
-package nye.progtech.fileUtils;
+package nye.progtech.fileutils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -25,6 +25,7 @@ public class JSONHandler {
 
     /**
      * gameBoard objektum konvertálása JSON file-ba.
+     *
      * @param gameBoard gameBoard
      * @param fileName filenév
      */
@@ -41,6 +42,7 @@ public class JSONHandler {
 
     /**
      * GameBoard objektum betöltése JSON file-ból.
+     *
      * @param fileName file neve
      * @return GameBoard
      */
@@ -86,6 +88,7 @@ public class JSONHandler {
 
     /**
      * GameBoard objektum mentése XML file-ba.
+     *
      * @param gameBoard gameboard objektum
      * @param fileName file neve
      */

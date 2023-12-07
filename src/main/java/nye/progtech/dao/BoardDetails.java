@@ -1,7 +1,7 @@
 /**
  * Data Access Object a pálya részletekhez.
  */
-package nye.progtech.DAO;
+package nye.progtech.dao;
 
 public class BoardDetails {
     /**
@@ -27,6 +27,7 @@ public class BoardDetails {
 
     /**
      * konstruktor a pálya részletekhez.
+     *
      * @param detailBoardSize pálya mérete
      * @param detailHeroRowIndex hős sora
      * @param detailHeroColIndex hős oszlopa
@@ -52,6 +53,7 @@ public class BoardDetails {
 
     /**
      * Getter a pálya mérethez.
+     *
      * @return boardSize
      */
     public int getBoardSize() {
@@ -60,6 +62,7 @@ public class BoardDetails {
 
     /**
      * Setter a pályamérethez.
+     *
      * @param setBoardSize méret
      */
     public void setBoardSize(final int setBoardSize) {
@@ -68,6 +71,7 @@ public class BoardDetails {
 
     /**
      * Getter a hős sor indexhez.
+     *
      * @return heroRowIndex
      */
     public int getHeroRowIndex() {
@@ -76,6 +80,7 @@ public class BoardDetails {
 
     /**
      * Setter a hős sor indexhez.
+     *
      * @param setHeroRowIndex hős sor index.
      */
     public void setHeroRowIndex(final int setHeroRowIndex) {
@@ -84,6 +89,7 @@ public class BoardDetails {
 
     /**
      * Getter a hős oszlop indexhez.
+     *
      * @return heroColIndex
      */
     public int getHeroColIndex() {
@@ -92,6 +98,7 @@ public class BoardDetails {
 
     /**
      * Setter a hős oszlop indexhez.
+     *
      * @param setHeroColIndex hős oszlop index.
      */
     public void setHeroColIndex(final int setHeroColIndex) {
@@ -100,6 +107,7 @@ public class BoardDetails {
 
     /**
      * Getter a hős irányához.
+     *
      * @return heroDirection
      */
     public char getHeroDirection() {
@@ -108,6 +116,7 @@ public class BoardDetails {
 
     /**
      * Setter a hős irányához.
+     *
      * @param setHeroDirection hős iránya
      */
     public void setHeroDirection(final char setHeroDirection) {
@@ -116,6 +125,7 @@ public class BoardDetails {
 
     /**
      * Getter a pályanévhez.
+     *
      * @return mapName
      */
     public String getMapName() {
@@ -124,6 +134,7 @@ public class BoardDetails {
 
     /**
      * Setter a pálya névhez.
+     *
      * @param setMapName pálya neve.
      */
     public void setMapName(final String setMapName) {

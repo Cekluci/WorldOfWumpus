@@ -4,9 +4,9 @@
  */
 package nye.progtech.repository;
 
-import nye.progtech.DAO.BoardDetails;
-import nye.progtech.DAO.ScoreBoard;
-import nye.progtech.DAO.Tile;
+import nye.progtech.dao.BoardDetails;
+import nye.progtech.dao.ScoreBoard;
+import nye.progtech.dao.Tile;
 import nye.progtech.model.GameBoard;
 import nye.progtech.model.Player;
 
@@ -16,6 +16,7 @@ public interface DBRepositoryInterface {
     /**
      * Pályanév alapján a játéktér mezőinek
      * Tile DAO listába lekérése.
+     *
      * @param mapName pálya neve
      * @return lista a mezőelemekről
      */
@@ -24,6 +25,7 @@ public interface DBRepositoryInterface {
     /**
      * boardDetails adatok lekérése
      * a pályanév alapján.
+     *
      * @param mapName pálya neve
      * @return boardDetails objektum.
      */
@@ -31,12 +33,14 @@ public interface DBRepositoryInterface {
 
     /**
      * Lista az összes pályanévről.
+     *
      * @return lista a pályanevekből
      */
     List<String> getAllMapNames();
 
     /**
      * gameboard objektum elmentése adatbázisba.
+     *
      * @param gameBoard gameboard objektum
      */
     void saveGameBoardToDB(GameBoard gameBoard);
@@ -44,18 +48,21 @@ public interface DBRepositoryInterface {
     /**
      * gameboard details elmentése az
      * adatbázisba.
+     *
      * @param gameBoard gameboard objektum
      */
     void saveGameBoardDetailsToDB(GameBoard gameBoard);
 
     /**
      * scoreboard elmentése az adatbázisba.
+     *
      * @param player player objektum
      */
     void saveScoreBoardToDB(Player player);
 
     /**
      * scoreboard lekérése az adatbázisból.
+     *
      * @return lista a pontszámokról
      */
     List<ScoreBoard> getScoreBoard();
