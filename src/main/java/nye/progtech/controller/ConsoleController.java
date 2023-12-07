@@ -262,7 +262,6 @@ public class ConsoleController {
      * @return pályák neve.
      */
     public static String chooseFileFromDB() {
-        //DataSource dataSource = DBInitializer.createDataSource();
         DBRepositoryInterface dbRepository = new DBRepositoryImpl();
 
         List<String> mapNames = dbRepository.getAllMapNames();
