@@ -17,15 +17,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBRepositoryImpl implements DBRepositoryInterface {
+    /**
+     * A datasource objektum.
+     */
     private final DataSource dataSource;
-
+    /**
+     * SQL-hez sor paraméter.
+     */
+    private static final int ROW_PARAM = 1;
+    /**
+     * SQL-hez oszlop paraméter.
+     */
+    private static final int COL_PARAM = 2;
+    /**
+     * SQL-hez mező kontent paraméter.
+     */
+    private static final int CONTENT_PARAM = 3;
+    /**
+     * SQL-hez pálya neve paraméter.
+     */
+    private static final int MAPNAME_PARAM = 4;
+    /**
+     * BoardDetails size paraméter.
+     */
+    private static final int BD_SIZE_PARAM = 1;
+    /**
+     * BoardDetails hero row index paraméter.
+     */
+    private static final int BD_HERO_ROW_PARAM = 2;
+    /**
+     * BoardDetails hero col index paraméter.
+     */
+    private static final int BD_HERO_COL_PARAM = 3;
+    /**
+     * BoardDetails hero direction paraméter.
+     */
+    private static final int BD_HERO_DIRECTION_PARAM = 4;
+    /**
+     * BoardDetails pályanév paraméter.
+     */
+    private static final int BD_MAPNAME_PARAM = 5;
+    /**
+     * DbRepositoryImpl konstruktor.
+     */
     public DBRepositoryImpl() {
         this.dataSource = DBInitializer.getDataSource();
     }
 
-    //olvassuk ki a map-ot az adatbázisból
+    /**
+     * Tile DAO-ba menti a pályát elemenként, amit
+     * beolvasott SQL-ből.
+     * @param mapName pálya neve
+     * @return list of Tiles
+     */
     @Override
-    public List<Tile> selectTilesByMapName(String mapName) {
+    public List<Tile> selectTilesByMapName(final String mapName) {
         List<Tile> tiles = new ArrayList<>();
         String sql = "SELECT * FROM tiles WHERE mapName = ?";
         try (Connection conn = dataSource.getConnection();
@@ -48,15 +94,17 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
     }
 
     //Mentsük el a map-ot az adatbázisba
-    private void insertTile(Tile tile) {
-        String sql = "INSERT INTO tiles (rowindex, columnindex, content, mapname) VALUES (?, ?, ?, ?)";
+    private void insertTile(final Tile tile) {
+        String sql = "INSERT INTO tiles"
+                    + "(rowindex, columnindex, content, mapname)"
+                    + "VALUES (?, ?, ?, ?)";
         try (
             Connection conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setInt(1, tile.getRow());
-                ps.setInt(2, tile.getColumn());
-                ps.setString(3, String.valueOf(tile.getContent()));
-                ps.setString(4, tile.getMapName());
+                ps.setInt(ROW_PARAM, tile.getRow());
+                ps.setInt(COL_PARAM, tile.getColumn());
+                ps.setString(CONTENT_PARAM, String.valueOf(tile.getContent()));
+                ps.setString(MAPNAME_PARAM, tile.getMapName());
                 ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -65,27 +113,34 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
     }
 
     //Mentsük el a boarddetails-t az adatbázisba
-    private void insertBoardDetails(BoardDetails boardDetails) {
-        String sql = "INSERT INTO boarddetails (boardsize, herorowindex, herocolindex,herodirection, mapname)" +
-                        "VALUES (?, ?, ?, ?, ?)";
+    private void insertBoardDetails(final BoardDetails boardDetails) {
+        String sql = "INSERT INTO boarddetails"
+                        + "(boardsize, herorowindex, herocolindex,"
+                        + "herodirection, mapname)"
+                        + "VALUES (?, ?, ?, ?, ?)";
         try (
                 Connection conn = dataSource.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql)
             ) {
-                ps.setInt(1, boardDetails.getBoardSize());
-                ps.setInt(2, boardDetails.getHeroRowIndex());
-                ps.setInt(3, boardDetails.getHeroColIndex());
-                ps.setString(4, String.valueOf(boardDetails.getHeroDirection()));
-                ps.setString(5, boardDetails.getMapName());
+                ps.setInt(BD_SIZE_PARAM, boardDetails.getBoardSize());
+                ps.setInt(BD_HERO_ROW_PARAM, boardDetails.getHeroRowIndex());
+                ps.setInt(BD_HERO_COL_PARAM, boardDetails.getHeroColIndex());
+                ps.setString(BD_HERO_DIRECTION_PARAM,
+                        String.valueOf(boardDetails.getHeroDirection()));
+                ps.setString(BD_MAPNAME_PARAM, boardDetails.getMapName());
                 ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    //Olvassuk be a boarddetails-t az adatbázisból
+    /**
+     * Olvassuk be a boarddetails-t az adatbázisból.
+     * @param mapName pálya neve
+     * @return boarddetails objektum
+     */
     @Override
-    public BoardDetails selectBoardDetailsByMapName(String mapName) {
+    public BoardDetails selectBoardDetailsByMapName(final String mapName) {
         BoardDetails bd = new BoardDetails();
         String sql = "SELECT * FROM boarddetails WHERE mapname = ?";
         try (Connection conn = dataSource.getConnection();
@@ -96,7 +151,8 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
                     bd.setBoardSize(rs.getInt("boardsize"));
                     bd.setHeroRowIndex(rs.getInt("herorowindex"));
                     bd.setHeroColIndex(rs.getInt("herocolindex"));
-                    bd.setHeroDirection(rs.getString("herodirection").charAt(0));
+                    bd.setHeroDirection(rs.getString("herodirection")
+                            .charAt(0));
                     bd.setMapName(rs.getString("mapname"));
                 }
             }
@@ -106,6 +162,10 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
         return bd;
     }
 
+    /**
+     * Kérjük le az összes pályanevet az adatbázisból.
+     * @return lista a pályanevekkel.
+     */
     @Override
     public List<String> getAllMapNames() {
         List<String> mapNames = new ArrayList<>();
@@ -122,8 +182,12 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
         return mapNames;
     }
 
+    /**
+     * Mentsük el a pályát az adatbázisba.
+     * @param gameBoard gameboard objektum
+     */
     @Override
-    public void saveGameBoardToDB(GameBoard gameBoard) {
+    public void saveGameBoardToDB(final GameBoard gameBoard) {
         for (int row = 0; row < gameBoard.getSize(); row++) {
             for (int col = 0; col < gameBoard.getSize(); col++) {
                 char content = gameBoard.getCell(row, col);
@@ -133,16 +197,27 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
         }
     }
 
+    /**
+     * GameBoard details feltöltése az adatbázisba.
+     * @param gameBoard gameboard objektum
+     */
     @Override
-    public void saveGameBoardDetailsToDB(GameBoard gameBoard) {
+    public void saveGameBoardDetailsToDB(final GameBoard gameBoard) {
         Hero hero = gameBoard.getHero();
-        BoardDetails boardDetails = new BoardDetails(gameBoard.getSize(), hero.getRow(), hero.getColumn(), hero.getDirection(), gameBoard.getMapName());
+        BoardDetails boardDetails = new BoardDetails(gameBoard.getSize(),
+                hero.getRow(), hero.getColumn(), hero.getDirection(),
+                gameBoard.getMapName());
         insertBoardDetails(boardDetails);
     }
 
+    /**
+     * Scoreboard elmentése az adatbázisba.
+     * @param player játékos objektum.
+     */
     @Override
-    public void saveScoreBoardToDB(Player player) {
-        String sql = "INSERT INTO scoreboard (playername, playerscore) VALUES (?, ?)";
+    public void saveScoreBoardToDB(final Player player) {
+        String sql = "INSERT INTO scoreboard"
+                        + "(playername, playerscore) VALUES (?, ?)";
         try (
             Connection conn = dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -154,10 +229,15 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
         }
     }
 
+    /**
+     * Scoreboard lehívása az adatbázisból.
+     * @return lista a pontszámokkal és a játékosokkal
+     */
     @Override
     public List<ScoreBoard> getScoreBoard() {
         List<ScoreBoard> scoreboard = new ArrayList<>();
-        String sql = "SELECT playername, playerscore FROM scoreboard ORDER BY playerscore DESC";
+        String sql = "SELECT playername, playerscore"
+                        + "FROM scoreboard ORDER BY playerscore DESC";
 
         try (Connection conn = dataSource.getConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);

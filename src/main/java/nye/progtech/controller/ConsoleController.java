@@ -48,7 +48,7 @@ public class ConsoleController {
 
     /**
      * Felhasználó üdvözlése.
-     * @param userName
+     * @param userName felhasználó neve
      */
     public final void greetUser(final String userName) {
         System.out.println(Colors.ANSI_GREEN
@@ -114,17 +114,22 @@ public class ConsoleController {
      * @return scanner.next().charAt(0)
      */
     public static char askForHeroDirection() {
-        System.out.println("Add meg a hős irányát (N, E, S, W): ");
-        String input = scanner.nextLine().toUpperCase();
-        while (!input.equals("N")
+        String input;
+        do {
+            System.out.println("Add meg a hős irányát (N, E, S, W): ");
+            input = scanner.nextLine().toUpperCase();
+            if (!input.equals("N")
+                    && !input.equals("E")
+                    && !input.equals("S")
+                    && !input.equals("W")) {
+                System.out.println(Colors.ANSI_RED
+                        + "Érvénytelen irány. Próbáld újra!"
+                        + Colors.ANSI_RESET);
+            }
+        } while (!input.equals("N")
                 && !input.equals("E")
                 && !input.equals("S")
-                && !input.equals("W")) {
-            System.out.println(Colors.ANSI_RED
-                    + "Érvénytelen irány. Próbáld újra!"
-                    + Colors.ANSI_RESET);
-            input = scanner.nextLine().toUpperCase();
-        }
+                && !input.equals("W"));
         return input.charAt(0);
     }
 
@@ -223,7 +228,7 @@ public class ConsoleController {
             System.out.println((i + 1) + ". " + fileNames.get(i));
         }
 
-        int choice = -1;
+        int choice;
         do {
             System.out.println("Válassz egy világot: ");
             while (!scanner.hasNextInt()) {
@@ -258,7 +263,7 @@ public class ConsoleController {
             System.out.println((i + 1) + ". " + mapNames.get(i));
         }
 
-        int choice = -1;
+        int choice;
         do {
             System.out.println("Válassz egy világot az adatbázisból.");
             while (!scanner.hasNextInt()) {

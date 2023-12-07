@@ -1,27 +1,42 @@
+/**
+ * Data Access Object a scoreboard objektumhoz.
+ */
 package nye.progtech.DAO;
 
 public class ScoreBoard {
-    private String playerName;
-    private int playerScore;
+    /**
+     * Játékos neve.
+     */
+    private final String playerName;
+    /**
+     * Játékos elért pontszáma.
+     */
+    private final int playerScore;
 
-    public ScoreBoard(String playerName, int playerScore) {
-        this.playerName = playerName;
-        this.playerScore = playerScore;
+    /**
+     * Scoreboard konstruktora.
+     * @param sbPlayerName játékos neve
+     * @param sbPlayerScore játékos pontszáma
+     */
+    public ScoreBoard(final String sbPlayerName, final int sbPlayerScore) {
+        this.playerName = sbPlayerName;
+        this.playerScore = sbPlayerScore;
     }
 
+    /**
+     * Getter a játékos nevéhez.
+     * @return játékos neve
+     */
     public String getPlayerName() {
         return playerName;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
-
+    /**
+     * Getter a játékos pontszámához.
+     * @return pontszám
+     */
     public int getPlayerScore() {
         return playerScore;
     }
 
-    public void setPlayerScore(int playerScore) {
-        this.playerScore = playerScore;
-    }
 }

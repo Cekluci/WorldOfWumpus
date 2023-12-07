@@ -1,3 +1,6 @@
+/**
+ * Main package, itt indul az alkalmazás.
+ */
 package nye.progtech;
 
 import nye.progtech.DAO.BoardDetails;
@@ -20,19 +23,25 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class Main {
-
     /**
-     * .
-     * Scanner objektum létrehozása
+     * DBRepository objektum.
      */
     private static DBRepositoryInterface dbRepository;
-
+    /**
+     * Hős objektum.
+     */
     private static Hero hero;
+    /**
+     * gameBoard objektum.
+     */
     private static GameBoard gameBoard;
 
-    private static Player player;
-
-    public static void main(String[] args) throws SQLException {
+    /**
+     * A program belépési pontja.
+     * @param args argumentumok
+     * @throws SQLException
+     */
+    public static void main(final String[] args) throws SQLException {
 
         ConsoleController consoleController = new ConsoleController();
         GameBoardService gameBoardService = new GameBoardService(dbRepository);
@@ -42,7 +51,7 @@ public class Main {
         //DB inicializálás és előzetes feltöltés
         DBInitializer.dbSetup();
 
-        DBRepositoryInterface dbRepository = new DBRepositoryImpl();
+        DBRepositoryInterface newDbRepository = new DBRepositoryImpl();
 
         String userName = consoleController.promptForUserName();
         consoleController.greetUser(userName);
@@ -66,7 +75,8 @@ public class Main {
                     case FILEBEOLVASAS: //KÉSZ
                         System.out.println("File beolvasás lesz");
                         consoleController.displayFormatSelectorMenu();
-                        FileFormat selectedFormat = ConsoleController.getSelectedFileFormat();
+                        FileFormat selectedFormat =
+                                ConsoleController.getSelectedFileFormat();
                         if (selectedFormat != null) {
                             switch (selectedFormat) {
                                 case JSON:
@@ -89,6 +99,10 @@ public class Main {
                                         System.out.println("A file betöltése sikertelen.");
                                     }
                                     break;
+                                default:
+                                    System.out.println(Colors.ANSI_RED
+                                                        + "Nem megfelelő választás. Próbáld újra"
+                                                        + Colors.ANSI_RESET);
                             }
                         }
                         break;
@@ -132,12 +146,19 @@ public class Main {
                         break;
                     case KILEPES: //KÉSZ
                         isRunning = false;
-                        System.out.println("Köszi, hogy játszottál, " + userName + "!");
+                        System.out.println(Colors.ANSI_GREEN
+                                + "Köszi, hogy játszottál, "
+                                + userName
+                                + "!"
+                                + Colors.ANSI_RESET);
                         ConsoleController.closeScanner();
                         System.exit(0);
                         break;
                     default:
-                        System.out.println("Rossz választás, próbáld újra, kedves " + userName);
+                        System.out.println(Colors.ANSI_RED
+                                + "Rossz választás, próbáld újra, kedves "
+                                + userName
+                                + Colors.ANSI_RESET);
                         break;
                 }
             }
