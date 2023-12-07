@@ -23,7 +23,7 @@ public class Hero {
      */
     private int arrows;
     /**
-     * Van-e a hősnél arany?
+     * Van-e a hősnél arany?.
      */
     private boolean hasGold;
     /**
@@ -122,7 +122,7 @@ public class Hero {
     }
 
     /**
-     * Van-e a hősnél arany?
+     * Van-e a hősnél arany?.
      *
      * @return van vagy nincs, true vagy false
      */

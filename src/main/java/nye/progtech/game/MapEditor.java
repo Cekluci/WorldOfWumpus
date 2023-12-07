@@ -3,6 +3,7 @@
  */
 package nye.progtech.game;
 
+import nye.progtech.Colors;
 import nye.progtech.controller.ConsoleController;
 import nye.progtech.fileutils.JSONHandler;
 import nye.progtech.model.GameBoard;
@@ -73,8 +74,26 @@ public class MapEditor {
         System.out.println("Üdvözöllek a pályaszerkesztőben!");
 
         int size = ConsoleController.askForBoardSize();
-        int heroRow = ConsoleController.askForHeroRow();
-        char heroColC = ConsoleController.askForHeroColumn();
+        int heroRow;
+        do {
+            heroRow = ConsoleController.askForHeroRow();
+            if (heroRow - 1 <= 0 || heroRow >= size) {
+                System.out.println(Colors.ANSI_RED
+                        + "A hős nem lehet a falban, vagy azon kívül."
+                        + Colors.ANSI_RESET);
+            }
+        } while (heroRow - 1 <= 0 || heroRow >= size);
+
+        char heroColC;
+        do {
+            heroColC = ConsoleController.askForHeroColumn();
+            if (heroColC - 65 <= 0 || heroColC - 65 >= size - 1) {
+                System.out.println(Colors.ANSI_RED
+                        + "A hős nem lehet a falban, vagy azon kívül."
+                        + Colors.ANSI_RESET);
+            }
+        } while (heroColC - 65 <= 0 || heroColC - 65 >= size - 1);
+
         char heroDir = ConsoleController.askForHeroDirection();
         String mapName = ConsoleController.askForMapName();
 
@@ -119,22 +138,36 @@ public class MapEditor {
 
             switch (command) {
                 case "add" -> {
-                    if (row - 1 == 0 || colInt - 1 == 0) {
-                        System.out.println("Nem rakhatsz ide semmit, ez itt fal.");
+                    if (row - 1 == 0 || colInt - 1 == 0 || row == editGameBoard.getSize() || colInt == editGameBoard.getSize()) {
+                        System.out.println(Colors.ANSI_RED
+                                + "Nem rakhatsz ide semmit, ez itt fal."
+                                + Colors.ANSI_RESET);
                     } else if (row - 1 > editGameBoard.getSize() || colInt - 1 > editGameBoard.getSize()) {
-                        System.out.println("A pálya határain kívül vagy.");
+                        System.out.println(Colors.ANSI_RED
+                                + "A pálya határain kívül vagy."
+                                + Colors.ANSI_RESET);
                     } else if (editGameBoard.getCell(row - 1, colInt - 1) != '_') {
-                        System.out.println("Ez a mező már foglalt!");
+                        System.out.println(Colors.ANSI_RED
+                                + "Ez a mező már foglalt!"
+                                + Colors.ANSI_RESET);
                     } else {
                         if (editGameBoard.getSize() <= BOARD_SM && wumpusCount > 1) {
-                            System.out.println("Nem lehet 1-nél több Wumpus a pályán!");
+                            System.out.println(Colors.ANSI_RED
+                                    + "Nem lehet 1-nél több Wumpus a pályán!"
+                                    + Colors.ANSI_RESET);
                         } else if (editGameBoard.getSize() >= BOARD_MID_L && editGameBoard.getSize() <= BOARD_MID_H && wumpusCount > 2) {
-                            System.out.println("Nem lehet 2-nél több Wumpus a pályán!");
+                            System.out.println(Colors.ANSI_RED
+                                    + "Nem lehet 2-nél több Wumpus a pályán!"
+                                    + Colors.ANSI_RESET);
                         } else if (editGameBoard.getSize() > BOARD_MID_H && wumpusCount > MAX_WUMPUS) {
-                            System.out.println("Nem lehet 3-nál több Wumpus a pályán!");
+                            System.out.println(Colors.ANSI_RED
+                                    + "Nem lehet 3-nál több Wumpus a pályán!"
+                                    + Colors.ANSI_RESET);
                         } else {
                             if (goldCount > 1) {
-                                System.out.println("Nem lehet 1-nél több arany a pályán!");
+                                System.out.println(Colors.ANSI_RED
+                                        + "Nem lehet 1-nél több arany a pályán!"
+                                        + Colors.ANSI_RESET);
                             } else {
                                 editGameBoard.setCell(row - 1, colInt - 1, content);
                             }
@@ -142,17 +175,25 @@ public class MapEditor {
                     }
                 }
                 case "delete" -> {
-                    if (row - 1 == 0 || colInt - 1 == 0) {
-                        System.out.println("Nem törölhetsz falat!");
+                    if (row - 1 == 0 || colInt - 1 == 0 || row == editGameBoard.getSize() || colInt == editGameBoard.getSize()) {
+                        System.out.println(Colors.ANSI_RED
+                                + "Nem törölhetsz falat!"
+                                + Colors.ANSI_RESET);
                     } else if (editGameBoard.getCell(row - 1, colInt - 1) == '_') {
-                        System.out.println("Ez a mező már üres!");
+                        System.out.println(Colors.ANSI_RED
+                                + "Ez a mező már üres!"
+                                + Colors.ANSI_RESET);
                     } else if (editGameBoard.getCell(row - 1, colInt - 1) == 'H') {
-                        System.out.println("A Hőst nem törölheted a pályáról!");
+                        System.out.println(Colors.ANSI_RED
+                                + "A Hőst nem törölheted a pályáról!"
+                                + Colors.ANSI_RESET);
                     } else {
                         editGameBoard.setCell(row - 1, colInt - 1, '_');
                     }
                 }
-                default -> System.out.println("Nem megfelelő parancs.");
+                default -> System.out.println(Colors.ANSI_RED
+                        + "Nem megfelelő parancs."
+                        + Colors.ANSI_RESET);
             }
             editGameBoard.displayBoard();
 
