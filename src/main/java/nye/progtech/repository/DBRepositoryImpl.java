@@ -242,7 +242,7 @@ public class DBRepositoryImpl implements DBRepositoryInterface {
     @Override
     public List<ScoreBoard> getScoreBoard() {
         List<ScoreBoard> scoreboard = new ArrayList<>();
-        String sql = "SELECT playername, playerscore"
+        String sql = "SELECT playername, playerscore "
                         + "FROM scoreboard ORDER BY playerscore DESC";
 
         try (Connection conn = dataSource.getConnection();

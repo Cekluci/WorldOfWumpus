@@ -89,8 +89,10 @@ public class Game {
             return;
         } else {
             arrows = hero.getArrows();
-            baseRow = hero.getRow();
-            baseCol = hero.getColumn();
+            //baseRow = hero.getRow();
+            baseRow = 4;
+            //baseCol = hero.getColumn();
+            baseCol = 1;
         }
 
         playerScore = player.getPlayerScore();
